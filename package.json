@@ -1,0 +1,27 @@
+{
+  "name": "rest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "check": "npx prettier --check **/*.{java,ts,scss,html}",
+    "format": "npx prettier --write **/*.{java,ts,scss,html}"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s14985/rest.git"
+  },
+  "author": "s14985",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s14985/rest/issues"
+  },
+  "homepage": "https://github.com/s14985/rest#readme",
+  "dependencies": {
+    "java-parser": "^0.8.0"
+  },
+  "devDependencies": {
+    "prettier": "2.0.5",
+    "prettier-plugin-java": "^0.8.0"
+  }
+}
