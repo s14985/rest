@@ -11,13 +11,5 @@ public interface ProductOrderRepository
   extends CrudRepository<ProductOrder, Long> {
   List<ProductOrder> findAllByProduct_Id(Long id);
 
-  List<ProductOrder> findAllByOrder_Id(Long id);
-
-  @Query(
-    "SELECT op FROM ProductOrder op " +
-    "LEFT JOIN FETCH op.order o " +
-    "LEFT JOIN FETCH op.product p " +
-    "WHERE p.id = :id"
-  )
-  List<ProductOrder> getByProductIdWithAddData(Long id);
+  List<ProductOrder> findAllByOrder_IdIn(List<Long> ids);
 }

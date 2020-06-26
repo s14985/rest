@@ -1,4 +1,4 @@
-package com.shop.rest.config;
+package com.shop.rest.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

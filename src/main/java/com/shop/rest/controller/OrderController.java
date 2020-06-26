@@ -2,9 +2,8 @@ package com.shop.rest.controller;
 
 import com.shop.rest.dto.OrderDTO;
 import com.shop.rest.dto.ProductOrderDTO;
+import com.shop.rest.dto.ProductOrdersDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
-import com.shop.rest.model.Order;
-import com.shop.rest.model.ProductOrder;
 import com.shop.rest.model.Status;
 import com.shop.rest.service.OrderService;
 import com.shop.rest.service.ProductOrderService;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,36 +31,38 @@ public class OrderController {
   private final ProductOrderService productOrderService;
 
   @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  public @NotNull Iterable<Order> list() {
-    return orderService.getAllOrders();
+  public ResponseEntity<Iterable<OrderDTO>> list() {
+    return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
   }
 
   @PostMapping
-  public ResponseEntity<Order> create(@RequestBody OrderDTO orderDTO) {
-    List<ProductOrderDTO> productOrderDTOS = orderDTO.getProductOrders();
+  public ResponseEntity<OrderDTO> create(
+    @RequestBody ProductOrdersDTO productOrdersDTO
+  ) {
+    List<ProductOrderDTO> productOrderDTOS = productOrdersDTO.getProductOrders();
     validateProductsExistence(productOrderDTOS);
-    Order order = new Order();
-    order.setStatus(Status.CREATED);
-    order.setUser(userService.getCurrentUser());
-    order = this.orderService.create(order);
+    OrderDTO order = OrderDTO
+      .builder()
+      .status(Status.CREATED)
+      .user(userService.getCurrentUser())
+      .build();
+    order = orderService.create(order);
 
-    List<ProductOrder> productOrders = new ArrayList<>();
+    List<ProductOrderDTO> productOrders = new ArrayList<>();
     for (ProductOrderDTO dto : productOrderDTOS) {
       productOrders.add(
         productOrderService.create(
-          new ProductOrder(
-            order,
-            productService.getProductById(dto.getProduct().getId()),
-            dto.getQuantity()
-          )
+          ProductOrderDTO
+            .builder()
+            .order(order)
+            .quantity(dto.getQuantity())
+            .product(productService.getProductById(dto.getProduct().getId()))
+            .build()
         )
       );
     }
 
-    order.setProductOrders(productOrders);
-
-    this.orderService.update(order);
+    orderService.update(orderService.setProductOrders(order, productOrders));
 
     String uri = ServletUriComponentsBuilder
       .fromCurrentServletMapping()

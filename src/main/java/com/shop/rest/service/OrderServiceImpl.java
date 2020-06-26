@@ -1,8 +1,10 @@
 package com.shop.rest.service;
 
-import com.shop.rest.exception.ResourceNotFoundException;
+import com.shop.rest.config.mapper.OrderMapper;
+import com.shop.rest.config.mapper.ProductOrderMapper;
+import com.shop.rest.dto.OrderDTO;
+import com.shop.rest.dto.ProductOrderDTO;
 import com.shop.rest.model.Order;
-import com.shop.rest.model.User;
 import com.shop.rest.repository.OrderRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,43 +19,36 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
+  private final OrderMapper orderMapper;
+  private final ProductOrderMapper productOrderMapper;
 
   @Override
-  public @NotNull Iterable<Order> getAllOrders() {
-    return orderRepository.findAll();
+  public @NotNull Iterable<OrderDTO> getAllOrders() {
+    return orderMapper.toDto(orderRepository.findAll());
   }
 
   @Override
-  public Order create(
-    @NotNull(message = "The order cannot be null.") @Valid Order order
+  public OrderDTO create(
+    @NotNull(message = "The order cannot be null.") @Valid OrderDTO order
   ) {
     order.setDateCreated(OffsetDateTime.now());
-    return orderRepository.save(order);
+    return orderMapper.toDto(orderRepository.save(orderMapper.toModel(order)));
   }
 
   @Override
-  public Order update(
-    @NotNull(message = "The order cannot be null.") @Valid Order order
+  public OrderDTO update(
+    @NotNull(message = "The order cannot be null.") @Valid OrderDTO order
   ) {
-    return orderRepository.save(order);
+    return orderMapper.toDto(orderRepository.save(orderMapper.toModel(order)));
   }
 
   @Override
-  public List<Order> getUserOrders(User user) {
-    return orderRepository.findAllByUser(user.getId());
-  }
-
-  @Override
-  public Order getOrderById(Long id) {
-    return orderRepository
-      .findById(id)
-      .orElseThrow(
-        () -> new ResourceNotFoundException("order", "id", id.toString())
-      );
-  }
-
-  @Override
-  public void delete(Long id) {
-    orderRepository.deleteById(id);
+  public OrderDTO setProductOrders(
+    OrderDTO orderDto,
+    List<ProductOrderDTO> productOrders
+  ) {
+    Order o = orderMapper.toModel(orderDto);
+    o.setProductOrders(productOrderMapper.toModel(productOrders));
+    return orderMapper.toDto(o);
   }
 }

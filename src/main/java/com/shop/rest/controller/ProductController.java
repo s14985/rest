@@ -1,10 +1,9 @@
 package com.shop.rest.controller;
 
+import com.shop.rest.dto.ProductDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
-import com.shop.rest.model.Product;
 import com.shop.rest.service.ProductService;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,20 +18,23 @@ public class ProductController {
   private final ProductService productService;
 
   @GetMapping({ "", "/" })
-  public @NotNull Iterable<Product> getProducts() {
-    return productService.getAllProducts();
+  public ResponseEntity<Iterable<ProductDTO>> getProducts() {
+    return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
   }
 
-  @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-  public @NotNull Product getProduct(@PathVariable Long id) {
-    return productService.getProductById(id);
+  @GetMapping(path = "/{id}")
+  public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
+    return new ResponseEntity<>(
+      productService.getProductById(id),
+      HttpStatus.OK
+    );
   }
 
   @PostMapping
-  public ResponseEntity<Product> createProduct(
-    @Valid @RequestBody Product product
+  public ResponseEntity<ProductDTO> createProduct(
+    @Valid @RequestBody ProductDTO product
   ) {
-    this.productService.save(product);
+    productService.save(product);
     String uri = ServletUriComponentsBuilder
       .fromCurrentServletMapping()
       .path("/products/{id}")
@@ -44,13 +46,29 @@ public class ProductController {
     return new ResponseEntity<>(product, headers, HttpStatus.CREATED);
   }
 
-  @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+  @PutMapping
+  public ResponseEntity<ProductDTO> editProduct(
+    @RequestBody ProductDTO product
+  ) {
+    productService.save(product);
+    return new ResponseEntity<>(product, HttpStatus.OK);
+  }
+
+  @DeleteMapping(path = "/{id}")
+  public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
     try {
-      this.productService.delete(id);
+      productService.deleteById(id);
       return ResponseEntity.noContent().build();
     } catch (ResourceNotFoundException e) {
       throw new ResourceNotFoundException("product", "id", id.toString());
     }
+  }
+
+  @GetMapping("/suggested-items/{id}")
+  public ResponseEntity<Iterable<ProductDTO>> test(@PathVariable Long id) {
+    return new ResponseEntity<>(
+      productService.findProductsFromOrdersByProductId(id),
+      HttpStatus.OK
+    );
   }
 }

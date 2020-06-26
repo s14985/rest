@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { OrdersComponent } from './items/orders/orders.component';
-import { ItemsDialogComponent } from './items/items-dialog/items-dialog.component';
 import { ProductsListComponent } from './items/products-list/products-list.component';
 import { ProductDetailsComponent } from './items/product-details/product-details.component';
 import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './shared/error/error.component';
+import { ItemsComponent } from './items/items.component';
 
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'items',
-    component: ItemsDialogComponent,
+    component: ItemsComponent,
     children: [
       {
         path: '',

@@ -1,5 +1,7 @@
 package com.shop.rest.service;
 
+import com.shop.rest.config.mapper.UserMapper;
+import com.shop.rest.dto.UserDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Order;
 import com.shop.rest.model.User;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
+  private final UserMapper userMapper;
 
   private String getCurrentUserLogin() {
     Object principal = SecurityContextHolder
@@ -33,45 +36,37 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public @NotNull Iterable<User> getAllUsers() {
-    return userRepository.findAll();
+  public @NotNull Iterable<UserDTO> getAllUsers() {
+    return userMapper.toDto(userRepository.findAll());
   }
 
   @Override
-  public User getUserById(
+  public UserDTO getUserById(
     @Min(value = 1L, message = "Invalid user ID.") Long id
   ) {
-    return userRepository
-      .findById(id)
-      .orElseThrow(
-        () -> new ResourceNotFoundException("user", "id", id.toString())
-      );
+    return userMapper.toDto(
+      userRepository
+        .findById(id)
+        .orElseThrow(
+          () -> new ResourceNotFoundException("user", "id", id.toString())
+        )
+    );
   }
 
   @Override
-  public User save(User user) {
-    return userRepository.save(user);
+  public UserDTO save(UserDTO user) {
+    return userMapper.toDto(userRepository.save(userMapper.toModel(user)));
   }
 
   @Override
-  public User getCurrentUser() {
+  public UserDTO getCurrentUser() {
     String login = getCurrentUserLogin();
-    return userRepository
-      .findByEmail(login)
-      .orElseThrow(() -> new ResourceNotFoundException("user", "email", login));
-  }
-
-  @Override
-  public User getUserByOrderInOrders(Order order) {
-    return userRepository
-      .findOneByOrderInOrders(order.getId())
-      .orElseThrow(
-        () ->
-          new ResourceNotFoundException(
-            "user",
-            "orderId",
-            order.getId().toString()
-          )
-      );
+    return userMapper.toDto(
+      userRepository
+        .findByEmail(login)
+        .orElseThrow(
+          () -> new ResourceNotFoundException("user", "email", login)
+        )
+    );
   }
 }

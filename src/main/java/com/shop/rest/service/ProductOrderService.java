@@ -1,5 +1,6 @@
 package com.shop.rest.service;
 
+import com.shop.rest.dto.ProductOrderDTO;
 import com.shop.rest.model.ProductOrder;
 import java.util.List;
 import javax.validation.Valid;
@@ -8,23 +9,15 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 public interface ProductOrderService {
-  ProductOrder create(
+  ProductOrderDTO create(
     @NotNull(
       message = "The products for order cannot be null."
-    ) @Valid ProductOrder productOrder
+    ) @Valid ProductOrderDTO productOrder
   );
 
-  List<ProductOrder> getAllByProductId(Long id);
+  List<ProductOrderDTO> getAllByProductId(Long id);
 
-  List<ProductOrder> getAllByOrderId(Long id);
+  void deleteAll(List<ProductOrderDTO> productOrders);
 
-  List<ProductOrder> getByProductIdWithAddData(Long id);
-
-  ProductOrder getById(Long id);
-
-  void delete(Long id);
-
-  Iterable<ProductOrder> getAllProductOrders();
-
-  void deleteAll(List<ProductOrder> productOrders);
+  List<ProductOrderDTO> getAllByOrder_IdIn(List<Long> ids);
 }

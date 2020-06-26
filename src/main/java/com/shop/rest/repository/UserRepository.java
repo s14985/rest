@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-  @Query("select u from User u join u.orders o where o.id = :id")
-  Optional<User> findOneByOrderInOrders(Long id);
-
   Optional<User> findByEmail(String email);
 }

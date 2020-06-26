@@ -16,6 +16,16 @@ import { ProductsListComponent } from './items/products-list/products-list.compo
 import { ShoppingCartComponent } from './items/shopping-cart/shopping-cart.component';
 import { AuthenticationService } from './services/authentication.service';
 import { EcommerceService } from './services/ecommerce.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavItemComponent } from './shared/navbar/nav-item/nav-item.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ItemsComponent } from './items/items.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -31,8 +41,22 @@ import { EcommerceService } from './services/ecommerce.service';
     SuggestedProductComponent,
     ProductsListComponent,
     ShoppingCartComponent,
+    NavItemComponent,
+    ItemsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    FormsModule,
+  ],
   providers: [EcommerceService, AuthenticationService],
   bootstrap: [AppComponent],
   entryComponents: [ItemsDialogComponent],

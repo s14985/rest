@@ -1,5 +1,7 @@
 package com.shop.rest.service;
 
+import com.shop.rest.dto.OrderDTO;
+import com.shop.rest.dto.ProductOrderDTO;
 import com.shop.rest.model.Order;
 import com.shop.rest.model.User;
 import java.util.List;
@@ -11,19 +13,18 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface OrderService {
   @NotNull
-  Iterable<Order> getAllOrders();
+  Iterable<OrderDTO> getAllOrders();
 
-  Order create(
-    @NotNull(message = "The order cannot be null.") @Valid Order order
+  OrderDTO create(
+    @NotNull(message = "The order cannot be null.") @Valid OrderDTO order
   );
 
-  Order update(
-    @NotNull(message = "The order cannot be null.") @Valid Order order
+  OrderDTO update(
+    @NotNull(message = "The order cannot be null.") @Valid OrderDTO order
   );
 
-  List<Order> getUserOrders(User user);
-
-  Order getOrderById(@Min(value = 1L, message = "Invalid order ID.") Long id);
-
-  void delete(Long id);
+  OrderDTO setProductOrders(
+    OrderDTO orderDto,
+    List<ProductOrderDTO> productOrders
+  );
 }

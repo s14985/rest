@@ -1,7 +1,7 @@
 package com.shop.rest.service;
 
-import com.shop.rest.exception.ResourceNotFoundException;
-import com.shop.rest.model.ProductOrder;
+import com.shop.rest.config.mapper.ProductOrderMapper;
+import com.shop.rest.dto.ProductOrderDTO;
 import com.shop.rest.repository.ProductOrderRepository;
 import java.util.List;
 import javax.validation.Valid;
@@ -15,50 +15,34 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class ProductOrderServiceImpl implements ProductOrderService {
   private final ProductOrderRepository productOrderRepository;
+  private final ProductOrderMapper productOrderMapper;
 
   @Override
-  public ProductOrder create(
+  public ProductOrderDTO create(
     @NotNull(
       message = "The products for order cannot be null."
-    ) @Valid ProductOrder productOrder
+    ) @Valid ProductOrderDTO productOrder
   ) {
-    return productOrderRepository.save(productOrder);
-  }
-
-  public List<ProductOrder> getAllByOrderId(Long id) {
-    return productOrderRepository.findAllByOrder_Id(id);
-  }
-
-  @Override
-  public List<ProductOrder> getByProductIdWithAddData(Long id) {
-    return productOrderRepository.getByProductIdWithAddData(id);
+    return productOrderMapper.toDto(
+      productOrderRepository.save(productOrderMapper.toModel(productOrder))
+    );
   }
 
   @Override
-  public List<ProductOrder> getAllByProductId(Long id) {
-    return productOrderRepository.findAllByProduct_Id(id);
+  public List<ProductOrderDTO> getAllByProductId(Long id) {
+    return productOrderMapper.toDto(
+      productOrderRepository.findAllByProduct_Id(id)
+    );
+  }
+
+  public void deleteAll(List<ProductOrderDTO> productOrders) {
+    productOrderRepository.deleteAll(productOrderMapper.toModel(productOrders));
   }
 
   @Override
-  public ProductOrder getById(Long id) {
-    return productOrderRepository
-      .findById(id)
-      .orElseThrow(
-        () -> new ResourceNotFoundException("productOrder", "id", id.toString())
-      );
-  }
-
-  @Override
-  public void delete(Long id) {
-    productOrderRepository.deleteById(id);
-  }
-
-  @Override
-  public Iterable<ProductOrder> getAllProductOrders() {
-    return productOrderRepository.findAll();
-  }
-
-  public void deleteAll(List<ProductOrder> productOrders) {
-    productOrderRepository.deleteAll(productOrders);
+  public List<ProductOrderDTO> getAllByOrder_IdIn(List<Long> ids) {
+    return productOrderMapper.toDto(
+      productOrderRepository.findAllByOrder_IdIn(ids)
+    );
   }
 }

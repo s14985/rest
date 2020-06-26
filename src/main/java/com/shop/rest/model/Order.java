@@ -35,15 +35,4 @@ public class Order {
     this.status = status;
     this.dateCreated = OffsetDateTime.now();
   }
-
-  //	@Transient
-  //	public Double getTotalOrderPrice() {
-  //		List<OrderProduct> orderProducts = getOrderProducts();
-  //		return orderProducts.stream().map(OrderProduct::getTotalPrice).reduce(Double::sum).get();
-  //	}
-
-  @Transient
-  public int getNumberOfProducts() {
-    return this.productOrders.size();
-  }
 }
