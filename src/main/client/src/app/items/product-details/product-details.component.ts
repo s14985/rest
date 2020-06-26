@@ -62,17 +62,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getSuggestedItems(a, key, id) {
-    const seen = {};
-    return a.filter(function (item) {
-      const k = key(item);
-      return item.product.id == id
-        ? false
-        : seen.hasOwnProperty(k)
-        ? false
-        : (seen[k] = true);
-    });
-  }
   private loadProduct(id: number) {
     this.ecommerceService
       .findProductById(id)
@@ -82,14 +71,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subProductChange.unsubscribe();
     this.subProduct.unsubscribe();
-  }
-
-  private getConcatProductOrders(items: any[]) {
-    let m = [];
-    for (let i = 0; i < items.length; i++) {
-      m = [].concat.apply(m, items[i].order.productOrders);
-    }
-    return m;
   }
 
   removeProduct() {
