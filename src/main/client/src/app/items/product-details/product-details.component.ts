@@ -32,7 +32,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.subProduct = this.activatedRoute.params.subscribe((params) => {
       this.loadProduct(+params['id']);
       this.getSuggestedProducts(+params['id']);
-
     });
 
     this.subProductChange = this.ecommerceService.ProductChanged$.subscribe(
