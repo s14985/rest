@@ -12,16 +12,17 @@ import { Order } from '../../models/order.model';
 
 @Component({
   selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss'],
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.scss'],
 })
-export class OrdersComponent implements OnInit, OnDestroy {
+export class OrderComponent implements OnInit, OnDestroy {
   private subProductOrders: Subscription;
   orders: ProductOrders;
   order: any;
   total: number;
   paid: boolean;
   hide: boolean;
+  finished: boolean;
 
   @Output() onOrderCanceled: EventEmitter<boolean>;
   @Output() onOrderFinished: EventEmitter<any>;
@@ -59,8 +60,21 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.onOrderCanceled.emit(this.hide);
   }
 
+  end() {
+    this.onOrderCanceled.emit();
+  }
+
   finish() {
-    this.onOrderFinished.emit();
+    this.paid = false;
+    this.finished = true;
+    return this.ecommerceService.finishOrder(this.order.id).subscribe(
+      (result: Order) => {
+        this.order = result;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   ngOnDestroy(): void {

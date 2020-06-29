@@ -8,7 +8,6 @@ import com.shop.rest.model.Status;
 import com.shop.rest.service.OrderService;
 import com.shop.rest.service.ProductOrderService;
 import com.shop.rest.service.ProductService;
-import com.shop.rest.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,13 +20,13 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders")
+@RequestMapping("/api/order")
 public class OrderController {
   private final OrderService orderService;
   private final ProductService productService;
-  private final UserService userService;
   private final ProductOrderService productOrderService;
 
   @GetMapping
@@ -36,16 +35,12 @@ public class OrderController {
   }
 
   @PostMapping
-  public ResponseEntity<OrderDTO> create(
+  public ResponseEntity<OrderDTO> createOrder(
     @RequestBody ProductOrdersDTO productOrdersDTO
   ) {
     List<ProductOrderDTO> productOrderDTOS = productOrdersDTO.getProductOrders();
     validateProductsExistence(productOrderDTOS);
-    OrderDTO order = OrderDTO
-      .builder()
-      .status(Status.CREATED)
-      .user(userService.getCurrentUser())
-      .build();
+    OrderDTO order = OrderDTO.builder().status(Status.CREATED).build();
     order = orderService.create(order);
 
     List<ProductOrderDTO> productOrders = new ArrayList<>();
@@ -73,6 +68,14 @@ public class OrderController {
     headers.add("Location", uri);
 
     return new ResponseEntity<>(order, headers, HttpStatus.CREATED);
+  }
+
+  @PutMapping
+  public ResponseEntity<OrderDTO> finishOrder(@RequestBody Long id) {
+    OrderDTO orderDTO = orderService.getOrderById(id);
+    orderDTO.setStatus(Status.FINISHED);
+    orderService.update(orderDTO);
+    return new ResponseEntity<>(orderDTO, HttpStatus.OK);
   }
 
   private void validateProductsExistence(List<ProductOrderDTO> productOrders) {

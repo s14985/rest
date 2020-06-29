@@ -15,6 +15,4 @@ public class OrderDTO {
   private OffsetDateTime dateCreated;
 
   private Status status;
-
-  private UserDTO user;
 }

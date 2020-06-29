@@ -11,8 +11,7 @@ import { tap } from 'rxjs/operators';
 })
 export class EcommerceService {
   private productsUrl = 'http://localhost:8082/api/products';
-  private ordersUrl = '/api/orders';
-  private usersUrl = '/api/users';
+  private ordersUrl = '/api/order';
 
   private product: Product;
   private productOrder: ProductOrder;
@@ -156,6 +155,19 @@ export class EcommerceService {
 
   newOrder(order: ProductOrders) {
     return this.httpClient.post(this.ordersUrl, order).pipe(
+      tap(
+        (data) => {
+          return data;
+        },
+        (error) => {
+          return error;
+        }
+      )
+    );
+  }
+
+  finishOrder(id: number) {
+    return this.httpClient.put(this.ordersUrl, id).pipe(
       tap(
         (data) => {
           return data;

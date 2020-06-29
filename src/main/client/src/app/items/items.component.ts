@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemsDialogComponent } from './items-dialog/items-dialog.component';
 import { ProductsListComponent } from './products-list/products-list.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
-import { OrdersComponent } from './orders/orders.component';
+import { OrderComponent } from './order/order.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EcommerceService } from '../services/ecommerce.service';
 import { Product } from '../models/product.model';
@@ -23,7 +23,7 @@ export class ItemsComponent implements OnInit {
   shoppingCart: ShoppingCartComponent;
 
   @ViewChild('orders', { static: false })
-  orders: OrdersComponent;
+  orders: OrderComponent;
 
   constructor(
     private dialog: MatDialog,

@@ -4,6 +4,7 @@ import com.shop.rest.config.mapper.OrderMapper;
 import com.shop.rest.config.mapper.ProductOrderMapper;
 import com.shop.rest.dto.OrderDTO;
 import com.shop.rest.dto.ProductOrderDTO;
+import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Order;
 import com.shop.rest.repository.OrderRepository;
 import java.time.OffsetDateTime;
@@ -50,5 +51,16 @@ public class OrderServiceImpl implements OrderService {
     Order o = orderMapper.toModel(orderDto);
     o.setProductOrders(productOrderMapper.toModel(productOrders));
     return orderMapper.toDto(o);
+  }
+
+  @Override
+  public OrderDTO getOrderById(Long id) {
+    return orderMapper.toDto(
+      orderRepository
+        .findById(id)
+        .orElseThrow(
+          () -> new ResourceNotFoundException("order", "id", id.toString())
+        )
+    );
   }
 }
