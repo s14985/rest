@@ -2,11 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Product } from '../../models/product.model';
 import { ProductOrder } from '../../models/product-order.model';
-import { User } from '../../models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EcommerceService } from '../../services/ecommerce.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthenticationService } from '../../services/authentication.service';
 import { ItemsDialogComponent } from '../items-dialog/items-dialog.component';
 
 @Component({
@@ -22,23 +20,19 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   selectedProductOrder: ProductOrder;
   deleteError: boolean;
   suggestedItems: any[] = [];
-  currentUser: User;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private ecommerceService: EcommerceService,
-    private dialog: MatDialog,
-    private authenticationService: AuthenticationService
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.subProduct = this.activatedRoute.params.subscribe((params) => {
       this.loadProduct(+params['id']);
-      this.currentUser = this.authenticationService.getCurrentUser();
-      this.currentUser
-        ? this.getSuggestedProducts(+params['id'])
-        : this.getRandomProducts();
+      this.getSuggestedProducts(+params['id']);
+
     });
 
     this.subProductChange = this.ecommerceService.ProductChanged$.subscribe(
@@ -54,12 +48,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       .subscribe((result: Product[]) => {
         this.suggestedItems = result.sort(() => 0.5 - Math.random());
       });
-  }
-
-  private getRandomProducts() {
-    this.ecommerceService.findAllProducts().subscribe((result: Product[]) => {
-      this.suggestedItems = result.sort(() => 0.5 - Math.random());
-    });
   }
 
   private loadProduct(id: number) {
