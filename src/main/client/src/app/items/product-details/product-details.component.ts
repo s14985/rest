@@ -30,29 +30,22 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subProduct = this.activatedRoute.params.subscribe((params) => {
-      this.loadProduct(+params['id']);
-      this.getSuggestedProducts(+params['id']);
+      this.getProductDetails(+params['id']);
     });
 
     this.subProductChange = this.ecommerceService.ProductChanged$.subscribe(
       () => {
-        this.loadProduct(this.ecommerceService.Product.id);
+        this.getProductDetails(this.ecommerceService.Product.id);
       }
     );
   }
 
-  private getSuggestedProducts(id: number) {
-    this.ecommerceService
-      .findAllProductsFromOrdersByProductId(id)
-      .subscribe((result: Product[]) => {
-        this.suggestedItems = result.sort(() => 0.5 - Math.random());
-      });
-  }
-
-  private loadProduct(id: number) {
-    this.ecommerceService
-      .findProductById(id)
-      .subscribe((result: Product) => (this.item = result));
+  private getProductDetails(id: number) {
+    this.ecommerceService.getProductDetails(id)
+      .subscribe((result: any) => {
+        this.item = result.product;
+        this.suggestedItems = result.suggestedProducts.sort(() => 0.5 - Math.random());
+      })
   }
 
   ngOnDestroy(): void {

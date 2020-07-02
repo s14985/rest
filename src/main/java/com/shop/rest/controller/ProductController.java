@@ -1,6 +1,7 @@
 package com.shop.rest.controller;
 
 import com.shop.rest.dto.ProductDTO;
+import com.shop.rest.dto.ProductDetailsDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.service.ProductService;
 import javax.validation.Valid;
@@ -21,14 +22,6 @@ public class ProductController {
   @GetMapping({ "", "/" })
   public ResponseEntity<Iterable<ProductDTO>> getProducts() {
     return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
-  }
-
-  @GetMapping(path = "/{id}")
-  public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
-    return new ResponseEntity<>(
-      productService.getProductById(id),
-      HttpStatus.OK
-    );
   }
 
   @PostMapping
@@ -65,11 +58,15 @@ public class ProductController {
     }
   }
 
-  @GetMapping("/suggested-items/{id}")
-  public ResponseEntity<Iterable<ProductDTO>> test(@PathVariable Long id) {
+  @GetMapping("/{id}")
+  public ResponseEntity<ProductDetailsDTO> getProductDetails(@PathVariable Long id) {
     return new ResponseEntity<>(
-      productService.findProductsFromOrdersByProductId(id),
-      HttpStatus.OK
+            ProductDetailsDTO
+                    .builder()
+                    .product(productService.getProductById(id))
+                    .suggestedProducts(productService.findProductsFromOrdersByProductId(id))
+                    .build(),
+            HttpStatus.OK
     );
   }
 }

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(exclude = { "order", "product" })
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "product_order")
 public class ProductOrder {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -61,7 +61,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   private loadProducts() {
     this.productOrders = [];
-    this.ecommerceService.findAllProducts().subscribe(
+    this.ecommerceService.getAllProducts().subscribe(
       (result: any[]) => {
         this.products = result;
         this.products.forEach((product) => {

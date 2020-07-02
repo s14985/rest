@@ -66,116 +66,60 @@ export class EcommerceService {
     this._totalSubject.next();
   }
 
-  findAllProducts() {
+  private getData() {
+    return tap(
+      (data) => {
+        return data;
+      },
+      (error) => {
+        return error;
+      }
+    );
+  }
+
+  getAllProducts() {
     return this.httpClient.get(this.productsUrl).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          console.log(error);
-          return error;
-        }
-      )
+      this.getData()
     );
-  }
-
-  findProductById(id: number) {
-    return this.httpClient.get(this.productsUrl + '/' + id).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          return error;
-        }
-      )
-    );
-  }
-
-  findAllProductsFromOrdersByProductId(id: number) {
-    return this.httpClient
-      .get(this.productsUrl + '/suggested-items/' + id)
-      .pipe(
-        tap(
-          (data) => {
-            return data;
-          },
-          (error) => {
-            return error;
-          }
-        )
-      );
   }
 
   newProduct(product: Product) {
     return this.httpClient.post(this.productsUrl, product).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          return error;
-        }
-      )
+      this.getData()
     );
   }
 
   editProduct(product: Product) {
     return this.httpClient.put(this.productsUrl, product).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          return error;
-        }
-      )
+      this.getData()
     );
   }
 
   deleteProduct(id: number) {
-    const options = {
+    return this.httpClient.delete(this.productsUrl + '/' + id, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
-    };
-
-    return this.httpClient.delete(this.productsUrl + '/' + id, options).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          return error;
-        }
-      )
+    }).pipe(
+      this.getData()
     );
   }
 
   newOrder(order: ProductOrders) {
     return this.httpClient.post(this.ordersUrl, order).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          return error;
-        }
-      )
+      this.getData()
     );
   }
 
   finishOrder(id: number) {
     return this.httpClient.put(this.ordersUrl, id).pipe(
-      tap(
-        (data) => {
-          return data;
-        },
-        (error) => {
-          return error;
-        }
-      )
+      this.getData()
+    );
+  }
+
+  getProductDetails(id: number) {
+    return this.httpClient.get(this.productsUrl + '/' + id).pipe(
+      this.getData()
     );
   }
 }
