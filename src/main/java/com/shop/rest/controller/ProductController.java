@@ -1,16 +1,22 @@
 package com.shop.rest.controller;
 
+import com.shop.rest.dto.ListedProductDTO;
 import com.shop.rest.dto.ProductDTO;
 import com.shop.rest.dto.ProductDetailsDTO;
+import com.shop.rest.dto.ProductWithProductOrdersDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
+import com.shop.rest.model.Product;
 import com.shop.rest.service.ProductService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -19,16 +25,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class ProductController {
   private final ProductService productService;
 
+//  @GetMapping({ "", "/" })
+//  public ResponseEntity<Iterable<ProductDTO>> getProducts() {
+//    return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+//  }
+
   @GetMapping({ "", "/" })
-  public ResponseEntity<Iterable<ProductDTO>> getProducts() {
-    return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+  public ResponseEntity<Iterable<ListedProductDTO>> getProducts() {
+    return new ResponseEntity<>(productService.getListedProducts(), HttpStatus.OK);
   }
 
-  @PostMapping
+  @PostMapping(
+    value = "",
+    consumes = { MediaType.APPLICATION_JSON_VALUE },
+    produces = { MediaType.APPLICATION_JSON_VALUE }
+  )
   public ResponseEntity<ProductDTO> createProduct(
     @Valid @RequestBody ProductDTO product
   ) {
-    productService.save(product);
+    product = productService.save(product);
     String uri = ServletUriComponentsBuilder
       .fromCurrentServletMapping()
       .path("/products/{id}")
@@ -40,11 +55,15 @@ public class ProductController {
     return new ResponseEntity<>(product, headers, HttpStatus.CREATED);
   }
 
-  @PutMapping
+  @PutMapping(
+    value = "",
+    consumes = { MediaType.APPLICATION_JSON_VALUE },
+    produces = { MediaType.APPLICATION_JSON_VALUE }
+  )
   public ResponseEntity<ProductDTO> editProduct(
-    @RequestBody ProductDTO product
+    @Valid @RequestBody ProductDTO product
   ) {
-    productService.save(product);
+    product = productService.save(product);
     return new ResponseEntity<>(product, HttpStatus.OK);
   }
 
@@ -59,13 +78,45 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductDetailsDTO> getProductDetails(@PathVariable Long id) {
+  public ResponseEntity<ProductDetailsDTO> getProductDetails(
+    @PathVariable Long id
+  ) {
     return new ResponseEntity<>(
-            ProductDetailsDTO
-                    .builder()
-                    .product(productService.getProductById(id))
-                    .suggestedProducts(productService.findProductsFromOrdersByProductId(id))
-                    .build(),
+      ProductDetailsDTO
+        .builder()
+        .product(productService.getProductById(id))
+        .suggestedProducts(productService.getProductsFromOrdersByProductId(id))
+        .build(),
+      HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/single/{id}")
+  public ResponseEntity<ProductDTO> getProduct(
+          @PathVariable Long id
+  ) {
+    return new ResponseEntity<>(
+            productService.getProductById(id),
+            HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/full/{id}")
+  public ResponseEntity<ProductWithProductOrdersDTO> getFullProduct(
+          @PathVariable Long id
+  ) {
+    return new ResponseEntity<>(
+            productService.getFullProduct(id),
+            HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/suggested/{id}")
+  public ResponseEntity<Iterable<ProductDTO>> getSuggested(
+          @PathVariable Long id
+  ) {
+    return new ResponseEntity<>(
+            productService.getProductsFromOrdersByProductId(id),
             HttpStatus.OK
     );
   }

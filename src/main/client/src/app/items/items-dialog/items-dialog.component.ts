@@ -29,12 +29,29 @@ export class ItemsDialogComponent implements OnInit {
     details: new FormControl(this.data === null ? '' : this.data.details, [
       Validators.required,
     ]),
+    manufacturer: new FormControl(
+      this.data === null ? '' : this.data.manufacturer,
+      [Validators.required]
+    ),
+    itemCode: new FormControl(this.data === null ? '' : this.data.itemCode, [
+      Validators.required,
+    ]),
+    color: new FormControl(this.data === null ? '' : this.data.color, [
+      Validators.required,
+    ]),
+    material: new FormControl(this.data === null ? '' : this.data.material, [
+      Validators.required,
+    ]),
   });
 
   name = this.addForm.controls['name'];
   price = this.addForm.controls['price'];
   picture = this.addForm.controls['pictureUrl'];
   details = this.addForm.controls['details'];
+  manufacturer = this.addForm.controls['manufacturer'];
+  itemCode = this.addForm.controls['itemCode'];
+  color = this.addForm.controls['color'];
+  material = this.addForm.controls['material'];
 
   constructor(
     private ecommerceService: EcommerceService,
@@ -45,19 +62,27 @@ export class ItemsDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
+    this.product = new Product(
+      this.data.id,
+      this.name.value,
+      this.price.value,
+      this.picture.value,
+      this.details.value,
+      this.manufacturer.value,
+      this.itemCode.value,
+      this.color.value,
+      this.material.value
+    );
     this.subNewProduct =
-      this.data === null ? this.newProduct() : this.editProduct();
+      this.data === null
+        ? this.newProduct(this.product)
+        : this.editProduct(this.product);
   }
 
-  private editProduct() {
-    return this.ecommerceService.editProduct(this.product).subscribe(
+  private editProduct(product: Product) {
+    return this.ecommerceService.editProduct(product).subscribe(
       (result: Product) => {
-        if (
-          !this.name.errors &&
-          !this.price.errors &&
-          !this.picture.errors &&
-          !this.details.errors
-        ) {
+        if (this.ifNoFieldErrors()) {
           this.dialog.close(result);
         }
       },
@@ -67,21 +92,28 @@ export class ItemsDialogComponent implements OnInit {
     );
   }
 
-  private newProduct() {
-    return this.ecommerceService.newProduct(this.product).subscribe(
+  private newProduct(product: Product) {
+    return this.ecommerceService.newProduct(product).subscribe(
       (result: Product) => {
-        if (
-          !this.name.errors &&
-          !this.price.errors &&
-          !this.picture.errors &&
-          !this.details.errors
-        ) {
+        if (this.ifNoFieldErrors()) {
           this.dialog.close(result);
         }
       },
       () => {
         this.saveErrorMsg = true;
       }
+    );
+  }
+  private ifNoFieldErrors() {
+    return (
+      !this.name.errors &&
+      !this.price.errors &&
+      !this.picture.errors &&
+      !this.details.errors &&
+      !this.manufacturer.errors &&
+      !this.itemCode.errors &&
+      !this.color.errors &&
+      !this.material.errors
     );
   }
 }

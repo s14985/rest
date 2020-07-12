@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ProductDetailsDTO {
-    private ProductDTO product;
-    private Iterable<ProductDTO> suggestedProducts;
+  private ProductDTO product;
+  private Iterable<ProductDTO> suggestedProducts;
 }

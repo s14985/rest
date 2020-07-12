@@ -1,6 +1,7 @@
 package com.shop.rest.service;
 
 import com.shop.rest.dto.ProductOrderDTO;
+import com.shop.rest.model.Order;
 import com.shop.rest.model.ProductOrder;
 import java.util.List;
 import javax.validation.Valid;
@@ -19,5 +20,7 @@ public interface ProductOrderService {
 
   void deleteAll(List<ProductOrderDTO> productOrders);
 
-  List<ProductOrderDTO> getAllByOrder_IdIn(List<Long> ids);
+  List<ProductOrderDTO> getAllByOrdersIdIn(List<Long> ids);
+
+  Iterable<ProductOrderDTO> getAllProductOrders();
 }

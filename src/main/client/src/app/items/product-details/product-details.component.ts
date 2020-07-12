@@ -15,7 +15,7 @@ import { ItemsDialogComponent } from '../items-dialog/items-dialog.component';
 export class ProductDetailsComponent implements OnInit, OnDestroy {
   private subProductChange: Subscription;
   private subProduct: Subscription;
-  item: Product = new Product();
+  item: Product;
   order: ProductOrder;
   selectedProductOrder: ProductOrder;
   deleteError: boolean;
@@ -41,11 +41,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getProductDetails(id: number) {
-    this.ecommerceService.getProductDetails(id)
-      .subscribe((result: any) => {
-        this.item = result.product;
-        this.suggestedItems = result.suggestedProducts.sort(() => 0.5 - Math.random());
-      })
+    this.ecommerceService.getProductDetails(id).subscribe((result: any) => {
+      this.item = result.product;
+      this.suggestedItems = result.suggestedProducts.sort(
+        () => 0.5 - Math.random()
+      );
+    });
   }
 
   ngOnDestroy(): void {

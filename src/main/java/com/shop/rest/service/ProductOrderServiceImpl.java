@@ -2,6 +2,7 @@ package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.ProductOrderMapper;
 import com.shop.rest.dto.ProductOrderDTO;
+import com.shop.rest.model.Order;
 import com.shop.rest.repository.ProductOrderRepository;
 import java.util.List;
 import javax.validation.Valid;
@@ -40,9 +41,14 @@ public class ProductOrderServiceImpl implements ProductOrderService {
   }
 
   @Override
-  public List<ProductOrderDTO> getAllByOrder_IdIn(List<Long> ids) {
+  public List<ProductOrderDTO> getAllByOrdersIdIn(List<Long> ids) {
     return productOrderMapper.toDto(
-      productOrderRepository.findAllByOrder_IdIn(ids)
+      productOrderRepository.findAllByOrdersIdIn(ids)
     );
+  }
+
+  @Override
+  public Iterable<ProductOrderDTO> getAllProductOrders() {
+    return productOrderMapper.toDto(productOrderRepository.findAll());
   }
 }

@@ -18,7 +18,7 @@ import { Order } from '../../models/order.model';
 export class OrderComponent implements OnInit, OnDestroy {
   private subProductOrders: Subscription;
   orders: ProductOrders;
-  order: any;
+  order: Order = new Order();
   total: number;
   paid: boolean;
   hide: boolean;

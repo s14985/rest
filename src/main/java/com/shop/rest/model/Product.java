@@ -24,6 +24,14 @@ public class Product {
 
   private String details;
 
+  private String manufacturer;
+
+  private String itemCode;
+
+  private String color;
+
+  private String material;
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
   private List<ProductOrder> productOrders;
 
@@ -40,11 +48,19 @@ public class Product {
     String name,
     BigDecimal price,
     String picture,
-    String details
+    String details,
+    String manufacturer,
+    String itemCode,
+    String color,
+    String material
   ) {
     this.name = name;
     this.price = price;
     this.picture = picture;
     this.details = details;
+    this.manufacturer = manufacturer;
+    this.itemCode = itemCode;
+    this.color = color;
+    this.material = material;
   }
 }

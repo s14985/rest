@@ -1,12 +1,18 @@
 package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.ProductMapper;
+import com.shop.rest.dto.ListedProductDTO;
 import com.shop.rest.dto.ProductDTO;
 import com.shop.rest.dto.ProductOrderDTO;
+import com.shop.rest.dto.ProductWithProductOrdersDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.repository.ProductRepository;
+
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +55,9 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Iterable<ProductDTO> findProductsFromOrdersByProductId(Long id) {
+  public Iterable<ProductDTO> getProductsFromOrdersByProductId(Long id) {
     return productOrderService
-      .getAllByOrder_IdIn(
+      .getAllByOrdersIdIn(
         productOrderService
           .getAllByProductId(id)
           .stream()
@@ -60,7 +66,21 @@ public class ProductServiceImpl implements ProductService {
       )
       .stream()
       .map(ProductOrderDTO::getProduct)
-      .distinct()
+//      .distinct()
       .collect(Collectors.toList());
+  }
+
+  @Override
+  public @NotNull Iterable<ListedProductDTO> getListedProducts() {
+    return productMapper.toListedDto(productRepository.findAll());
+  }
+
+  @Override
+  public ProductWithProductOrdersDTO getFullProduct(Long id) {
+    ProductWithProductOrdersDTO product = productMapper.toFullProductDto(productRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("product", "id", id.toString())
+    ));
+    product.setProductOrder(productOrderService.getAllByProductId(id));
+    return product;
   }
 }

@@ -72,54 +72,57 @@ export class EcommerceService {
         return data;
       },
       (error) => {
+        console.log(error);
         return error;
       }
     );
   }
 
   getAllProducts() {
-    return this.httpClient.get(this.productsUrl).pipe(
-      this.getData()
-    );
+    return this.httpClient.get(this.productsUrl).pipe(this.getData());
   }
 
   newProduct(product: Product) {
-    return this.httpClient.post(this.productsUrl, product).pipe(
-      this.getData()
-    );
+    return this.httpClient
+      .post(this.productsUrl, product, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .pipe(this.getData());
   }
 
   editProduct(product: Product) {
-    return this.httpClient.put(this.productsUrl, product).pipe(
-      this.getData()
-    );
+    return this.httpClient
+      .put(this.productsUrl, product, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .pipe(this.getData());
   }
 
   deleteProduct(id: number) {
-    return this.httpClient.delete(this.productsUrl + '/' + id, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    }).pipe(
-      this.getData()
-    );
+    return this.httpClient
+      .delete(this.productsUrl + '/' + id, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .pipe(this.getData());
   }
 
   newOrder(order: ProductOrders) {
-    return this.httpClient.post(this.ordersUrl, order).pipe(
-      this.getData()
-    );
+    return this.httpClient.post(this.ordersUrl, order).pipe(this.getData());
   }
 
   finishOrder(id: number) {
-    return this.httpClient.put(this.ordersUrl, id).pipe(
-      this.getData()
-    );
+    return this.httpClient.put(this.ordersUrl, id).pipe(this.getData());
   }
 
   getProductDetails(id: number) {
-    return this.httpClient.get(this.productsUrl + '/' + id).pipe(
-      this.getData()
-    );
+    return this.httpClient
+      .get(this.productsUrl + '/' + id)
+      .pipe(this.getData());
   }
 }

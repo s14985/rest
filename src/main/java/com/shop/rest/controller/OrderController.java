@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,11 @@ public class OrderController {
     return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
   }
 
-  @PostMapping
+  @PostMapping(
+    value = "",
+    consumes = { MediaType.APPLICATION_JSON_VALUE },
+    produces = { MediaType.APPLICATION_JSON_VALUE }
+  )
   public ResponseEntity<OrderDTO> createOrder(
     @RequestBody ProductOrdersDTO productOrdersDTO
   ) {
@@ -59,18 +64,14 @@ public class OrderController {
 
     orderService.update(orderService.setProductOrders(order, productOrders));
 
-    String uri = ServletUriComponentsBuilder
-      .fromCurrentServletMapping()
-      .path("/orders/{id}")
-      .buildAndExpand(order.getId())
-      .toString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Location", uri);
-
-    return new ResponseEntity<>(order, headers, HttpStatus.CREATED);
+    return new ResponseEntity<>(order, HttpStatus.CREATED);
   }
 
-  @PutMapping
+  @PutMapping(
+    value = "",
+    consumes = { MediaType.APPLICATION_JSON_VALUE },
+    produces = { MediaType.APPLICATION_JSON_VALUE }
+  )
   public ResponseEntity<OrderDTO> finishOrder(@RequestBody Long id) {
     OrderDTO orderDTO = orderService.getOrderById(id);
     orderDTO.setStatus(Status.FINISHED);
