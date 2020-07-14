@@ -1,18 +1,14 @@
 package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.ProductMapper;
-import com.shop.rest.dto.ListedProductDTO;
-import com.shop.rest.dto.ProductDTO;
-import com.shop.rest.dto.ProductOrderDTO;
-import com.shop.rest.dto.ProductWithProductOrdersDTO;
+import com.shop.rest.dto.product.FullProductDTO;
+import com.shop.rest.dto.product.output.*;
+import com.shop.rest.dto.product_order.SuggestedProductOrderDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
+import com.shop.rest.model.Product;
 import com.shop.rest.repository.ProductRepository;
-
-import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,64 +19,112 @@ public class ProductServiceImpl implements ProductService {
   private final ProductOrderService productOrderService;
   private final ProductMapper productMapper;
 
-  @Override
-  public Iterable<ProductDTO> getAllProducts() {
-    return productMapper.toDto(productRepository.findAll());
+  private Product getModel(
+    @Min(value = 1L, message = "Invalid product ID.") Long id
+  ) {
+    return productRepository
+      .findById(id)
+      .orElseThrow(
+        () -> new ResourceNotFoundException("product", "id", id.toString())
+      );
   }
 
   @Override
-  public ProductDTO getProductById(
-    @Min(value = 1L, message = "Invalid product ID.") Long id
-  ) {
-    return productMapper.toDto(
-      productRepository
-        .findById(id)
-        .orElseThrow(
-          () -> new ResourceNotFoundException("product", "id", id.toString())
-        )
-    );
+  public Iterable<ProductDTO> getProducts() {
+    return productMapper.toProductDto(productRepository.findAll());
+  }
+
+  @Override
+  public FullProductDTO getFullProductById(Long id) {
+    return productMapper.toFullProductDto(getModel(id));
   }
 
   @Override
   public ProductDTO save(ProductDTO product) {
-    return productMapper.toDto(
+    return productMapper.toProductDto(
       productRepository.save(productMapper.toModel(product))
     );
   }
 
   @Override
   public void deleteById(Long id) {
-    productOrderService.deleteAll(productOrderService.getAllByProductId(id));
+    productOrderService.deleteAll(
+      productOrderService.getFullProductOrdersByProductId(id)
+    );
     productRepository.deleteById(id);
   }
 
   @Override
-  public Iterable<ProductDTO> getProductsFromOrdersByProductId(Long id) {
+  public Iterable<ProductDTO> getSuggestedProductsFromOrdersByProductId(
+    Long id
+  ) {
     return productOrderService
-      .getAllByOrdersIdIn(
+      .getSuggestedProductOrderByOrdersIdIn(
         productOrderService
-          .getAllByProductId(id)
+          .getSuggestedProductOrdersByProductId(id)
           .stream()
           .map(productOrderDTO -> productOrderDTO.getOrder().getId())
           .collect(Collectors.toList())
       )
       .stream()
-      .map(ProductOrderDTO::getProduct)
-//      .distinct()
+      .map(SuggestedProductOrderDTO::getProduct)
+      //      .distinct()
       .collect(Collectors.toList());
   }
 
+  /**
+   * 0 degree nesting
+   */
   @Override
-  public @NotNull Iterable<ListedProductDTO> getListedProducts() {
-    return productMapper.toListedDto(productRepository.findAll());
+  public ProductDTO getProductById(Long id) {
+    return productMapper.toProductDto(getModel(id));
   }
 
+  /**
+   * 1 degree nesting
+   */
   @Override
-  public ProductWithProductOrdersDTO getFullProduct(Long id) {
-    ProductWithProductOrdersDTO product = productMapper.toFullProductDto(productRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("product", "id", id.toString())
-    ));
-    product.setProductOrder(productOrderService.getAllByProductId(id));
+  public ProductWithProductOrdersDTO getProductWithProductOrdersById(Long id) {
+    return productMapper.toProductWithProductOrdersDto(getModel(id));
+  }
+
+  /**
+   * 2 degree nesting
+   */
+  @Override
+  public ProductWithProductOrdersWithOrderDTO getProductWithProductOrdersWithOrderById(
+    Long id
+  ) {
+    ProductWithProductOrdersWithOrderDTO product =  productMapper.toProductWithProductOrdersWithOrderDto(getModel(id));
+    product.setProductOrders(productOrderService.getProductOrderWithOrderByProductId(id));
+    return product;
+  }
+
+  /**
+   * 3 degree nesting
+   */
+  @Override
+  public ProductWithProductOrdersWithOrderWithUserDTO getProductWithProductOrdersWithOrderWithUserById(
+    Long id
+  ) {
+    ProductWithProductOrdersWithOrderWithUserDTO product =  productMapper.toProductWithProductOrdersWithOrderWithUserDto(
+      getModel(id)
+    );
+    product.setProductOrders(productOrderService.getProductOrdersWithOrderWithUserByProductId(id));
+    return product;
+  }
+
+  /**
+   * 4 degree nesting
+   */
+  @Override
+  public ProductWithProductOrdersWithOrderWithUserWithAddressDTO getProductWithProductOrdersWithOrderWithUserWithAddressById(
+    Long id
+  ) {
+    ProductWithProductOrdersWithOrderWithUserWithAddressDTO product = productMapper.toProductWithProductOrdersWithOrderWithUserWithAddressDto(
+      getModel(id)
+    );
+    product.setProductOrders(productOrderService.getProductOrderWithOrderWithUserWithAddressByProductId(id));
     return product;
   }
 }

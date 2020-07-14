@@ -1,11 +1,7 @@
 package com.shop.rest.controller;
 
-import com.shop.rest.dto.ListedProductDTO;
-import com.shop.rest.dto.ProductDTO;
-import com.shop.rest.dto.ProductDetailsDTO;
-import com.shop.rest.dto.ProductWithProductOrdersDTO;
+import com.shop.rest.dto.product.output.*;
 import com.shop.rest.exception.ResourceNotFoundException;
-import com.shop.rest.model.Product;
 import com.shop.rest.service.ProductService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -25,14 +19,19 @@ import java.util.List;
 public class ProductController {
   private final ProductService productService;
 
-//  @GetMapping({ "", "/" })
-//  public ResponseEntity<Iterable<ProductDTO>> getProducts() {
-//    return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
-//  }
-
   @GetMapping({ "", "/" })
-  public ResponseEntity<Iterable<ListedProductDTO>> getProducts() {
-    return new ResponseEntity<>(productService.getListedProducts(), HttpStatus.OK);
+  public ResponseEntity<Iterable<ProductDTO>> getProducts() {
+    return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}/suggested")
+  public ResponseEntity<Iterable<ProductDTO>> getSuggestedProducts(
+    @PathVariable Long id
+  ) {
+    return new ResponseEntity<>(
+      productService.getSuggestedProductsFromOrdersByProductId(id),
+      HttpStatus.OK
+    );
   }
 
   @PostMapping(
@@ -78,46 +77,52 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductDetailsDTO> getProductDetails(
-    @PathVariable Long id
-  ) {
+  public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
     return new ResponseEntity<>(
-      ProductDetailsDTO
-        .builder()
-        .product(productService.getProductById(id))
-        .suggestedProducts(productService.getProductsFromOrdersByProductId(id))
-        .build(),
+      productService.getProductById(id),
       HttpStatus.OK
     );
   }
 
-  @GetMapping("/single/{id}")
-  public ResponseEntity<ProductDTO> getProduct(
-          @PathVariable Long id
+  @GetMapping("/{id}/product-orders")
+  public ResponseEntity<ProductWithProductOrdersDTO> getProductWithProductOrders(
+    @PathVariable Long id
   ) {
     return new ResponseEntity<>(
-            productService.getProductById(id),
-            HttpStatus.OK
+      productService.getProductWithProductOrdersById(id),
+      HttpStatus.OK
     );
   }
 
-  @GetMapping("/full/{id}")
-  public ResponseEntity<ProductWithProductOrdersDTO> getFullProduct(
-          @PathVariable Long id
+  @GetMapping("/{id}/product-orders/order")
+  public ResponseEntity<ProductWithProductOrdersWithOrderDTO> getProductWithProductOrdersWithOrder(
+    @PathVariable Long id
   ) {
     return new ResponseEntity<>(
-            productService.getFullProduct(id),
-            HttpStatus.OK
+      productService.getProductWithProductOrdersWithOrderById(id),
+      HttpStatus.OK
     );
   }
 
-  @GetMapping("/suggested/{id}")
-  public ResponseEntity<Iterable<ProductDTO>> getSuggested(
-          @PathVariable Long id
+  @GetMapping("/{id}/product-orders/order/user")
+  public ResponseEntity<ProductWithProductOrdersWithOrderWithUserDTO> getProductWithProductOrdersWithOrderWithUsert(
+    @PathVariable Long id
   ) {
     return new ResponseEntity<>(
-            productService.getProductsFromOrdersByProductId(id),
-            HttpStatus.OK
+      productService.getProductWithProductOrdersWithOrderWithUserById(id),
+      HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/{id}/product-orders/order/user/address")
+  public ResponseEntity<ProductWithProductOrdersWithOrderWithUserWithAddressDTO> getProductWithProductOrdersWithOrderWithUserWithAddress(
+    @PathVariable Long id
+  ) {
+    return new ResponseEntity<>(
+      productService.getProductWithProductOrdersWithOrderWithUserWithAddressById(
+        id
+      ),
+      HttpStatus.OK
     );
   }
 }

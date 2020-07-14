@@ -1,33 +1,37 @@
 package com.shop.rest.service;
 
-import com.shop.rest.dto.ListedProductDTO;
-import com.shop.rest.dto.ProductDTO;
-
+import com.shop.rest.dto.product.FullProductDTO;
+import com.shop.rest.dto.product.output.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import com.shop.rest.dto.ProductWithProductOrdersDTO;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.List;
 
 @Validated
 public interface ProductService {
   @NotNull
-  Iterable<ProductDTO> getAllProducts();
-
-  @NotNull
-  Iterable<ListedProductDTO> getListedProducts();
-
-  ProductDTO getProductById(
-    @Min(value = 1L, message = "Invalid product ID.") Long id
-  );
+  Iterable<ProductDTO> getProducts();
 
   ProductDTO save(ProductDTO product);
 
   void deleteById(Long id);
 
-  Iterable<ProductDTO> getProductsFromOrdersByProductId(Long id);
+  Iterable<ProductDTO> getSuggestedProductsFromOrdersByProductId(Long id);
 
-  ProductWithProductOrdersDTO getFullProduct(Long id);
+  FullProductDTO getFullProductById(Long id);
+
+  ProductDTO getProductById(Long id);
+
+  ProductWithProductOrdersDTO getProductWithProductOrdersById(Long id);
+
+  ProductWithProductOrdersWithOrderDTO getProductWithProductOrdersWithOrderById(
+    Long id
+  );
+
+  ProductWithProductOrdersWithOrderWithUserDTO getProductWithProductOrdersWithOrderWithUserById(
+    Long id
+  );
+
+  ProductWithProductOrdersWithOrderWithUserWithAddressDTO getProductWithProductOrdersWithOrderWithUserWithAddressById(
+    Long id
+  );
 }

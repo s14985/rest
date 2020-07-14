@@ -9,8 +9,8 @@ import lombok.*;
 
 @Data
 @Entity
-@ToString(exclude = { "productOrders" })
-@EqualsAndHashCode(exclude = { "productOrders" })
+@ToString(exclude = { "productOrders", "user" })
+@EqualsAndHashCode(exclude = { "productOrders", "user" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "orders")
@@ -27,8 +27,14 @@ public class Order {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
   private List<ProductOrder> productOrders;
 
-  public Order(Status status) {
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  public Order(Status status, User user) {
     this.status = status;
+    this.user = user;
     this.dateCreated = OffsetDateTime.now();
   }
 }

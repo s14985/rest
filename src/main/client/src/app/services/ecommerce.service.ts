@@ -10,8 +10,8 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class EcommerceService {
-  private productsUrl = 'http://localhost:8082/api/products';
-  private ordersUrl = '/api/order';
+  private productsUrl = '/api/products';
+  private ordersUrl = '/api/orders';
 
   private product: Product;
   private productOrder: ProductOrder;

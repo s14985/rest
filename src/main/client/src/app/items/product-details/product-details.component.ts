@@ -42,10 +42,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   private getProductDetails(id: number) {
     this.ecommerceService.getProductDetails(id).subscribe((result: any) => {
-      this.item = result.product;
-      this.suggestedItems = result.suggestedProducts.sort(
-        () => 0.5 - Math.random()
-      );
+      this.item = result;
     });
   }
 

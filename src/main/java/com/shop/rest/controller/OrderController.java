@@ -1,38 +1,47 @@
 package com.shop.rest.controller;
 
-import com.shop.rest.dto.OrderDTO;
-import com.shop.rest.dto.ProductOrderDTO;
-import com.shop.rest.dto.ProductOrdersDTO;
+import com.shop.rest.dto.order.OrderWithUserDTO;
+import com.shop.rest.dto.order.OrderWithUserWithAddressDTO;
+import com.shop.rest.dto.product_order.*;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Status;
-import com.shop.rest.service.OrderService;
-import com.shop.rest.service.ProductOrderService;
-import com.shop.rest.service.ProductService;
+import com.shop.rest.service.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
+import org.apache.commons.math3.random.RandomDataGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/order")
+@RequestMapping("/api/orders")
 public class OrderController {
   private final OrderService orderService;
   private final ProductService productService;
   private final ProductOrderService productOrderService;
+  private final UserService userService;
 
-  @GetMapping
-  public ResponseEntity<Iterable<OrderDTO>> list() {
-    return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+  @GetMapping({ "/users" })
+  public ResponseEntity<Iterable<OrderWithUserDTO>> getOrders() {
+    return new ResponseEntity<>(
+      orderService.getAllOrdersWithUser(),
+      HttpStatus.OK
+    );
+  }
+
+  @GetMapping({ "/{id}/user" })
+  public ResponseEntity<OrderWithUserDTO> getOrder(@PathVariable Long id) {
+    return new ResponseEntity<>(
+      orderService.getOrderWithUserById(id),
+      HttpStatus.OK
+    );
   }
 
   @PostMapping(
@@ -40,19 +49,25 @@ public class OrderController {
     consumes = { MediaType.APPLICATION_JSON_VALUE },
     produces = { MediaType.APPLICATION_JSON_VALUE }
   )
-  public ResponseEntity<OrderDTO> createOrder(
-    @RequestBody ProductOrdersDTO productOrdersDTO
+  public ResponseEntity<OrderWithUserDTO> createOrder(
+    @RequestBody OrderedProductOrdersListDTO orderedProductOrdersList
   ) {
-    List<ProductOrderDTO> productOrderDTOS = productOrdersDTO.getProductOrders();
-    validateProductsExistence(productOrderDTOS);
-    OrderDTO order = OrderDTO.builder().status(Status.CREATED).build();
+    List<OrderedProductOrderDTO> orderedProductOrders = orderedProductOrdersList.getProductOrders();
+    validateProductsExistence(orderedProductOrders);
+    OrderWithUserDTO order = OrderWithUserDTO
+      .builder()
+      .status(Status.CREATED)
+      .user(
+        userService.getUserById(new RandomDataGenerator().nextLong(1L, 10000L))
+      )
+      .build();
     order = orderService.create(order);
 
-    List<ProductOrderDTO> productOrders = new ArrayList<>();
-    for (ProductOrderDTO dto : productOrderDTOS) {
+    List<CreatedProductOrderDTO> productOrders = new ArrayList<>();
+    for (OrderedProductOrderDTO dto : orderedProductOrders) {
       productOrders.add(
         productOrderService.create(
-          ProductOrderDTO
+          CreatedProductOrderDTO
             .builder()
             .order(order)
             .quantity(dto.getQuantity())
@@ -62,7 +77,7 @@ public class OrderController {
       );
     }
 
-    orderService.update(orderService.setProductOrders(order, productOrders));
+    orderService.update(orderService.setOrder(order, productOrders));
 
     return new ResponseEntity<>(order, HttpStatus.CREATED);
   }
@@ -72,15 +87,17 @@ public class OrderController {
     consumes = { MediaType.APPLICATION_JSON_VALUE },
     produces = { MediaType.APPLICATION_JSON_VALUE }
   )
-  public ResponseEntity<OrderDTO> finishOrder(@RequestBody Long id) {
-    OrderDTO orderDTO = orderService.getOrderById(id);
-    orderDTO.setStatus(Status.FINISHED);
-    orderService.update(orderDTO);
-    return new ResponseEntity<>(orderDTO, HttpStatus.OK);
+  public ResponseEntity<OrderWithUserDTO> finishOrder(@RequestBody Long id) {
+    OrderWithUserDTO orderWithUser = orderService.getOrderWithUserById(id);
+    orderWithUser.setStatus(Status.FINISHED);
+    orderService.update(orderWithUser);
+    return new ResponseEntity<>(orderWithUser, HttpStatus.OK);
   }
 
-  private void validateProductsExistence(List<ProductOrderDTO> productOrders) {
-    List<ProductOrderDTO> list = productOrders
+  private void validateProductsExistence(
+    List<OrderedProductOrderDTO> productOrders
+  ) {
+    List<OrderedProductOrderDTO> list = productOrders
       .stream()
       .filter(
         op ->
