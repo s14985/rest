@@ -1,8 +1,6 @@
 package com.shop.rest.service;
 
-import com.shop.rest.dto.product.FullProductDTO;
 import com.shop.rest.dto.product.output.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,8 +14,6 @@ public interface ProductService {
   void deleteById(Long id);
 
   Iterable<ProductDTO> getSuggestedProductsFromOrdersByProductId(Long id);
-
-  FullProductDTO getFullProductById(Long id);
 
   ProductDTO getProductById(Long id);
 

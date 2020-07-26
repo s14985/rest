@@ -1,9 +1,8 @@
 package com.shop.rest.dto.product.output;
 
+import com.shop.rest.dto.product_order.output.ProductOrderWithOrderDTO;
 import java.math.BigDecimal;
 import java.util.List;
-
-import com.shop.rest.dto.product_order.output.ProductOrderWithOrderDTO;
 import lombok.Data;
 
 @Data

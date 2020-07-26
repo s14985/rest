@@ -68,17 +68,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     );
   }
 
-  /**
-   * 1 degree nesting
-   */
-  @Override
-  public List<ProductOrderDTO> getProductOrdersByProductId(Long id) {
-    return productOrderMapper.toProductOrderDto(getModelsByProductId(id));
-  }
-
-  /**
-   * 2 degree nesting
-   */
   @Override
   public List<ProductOrderWithOrderDTO> getProductOrderWithOrderByProductId(
     Long id
@@ -88,9 +77,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     );
   }
 
-  /**
-   * 3 degree nesting
-   */
   @Override
   public List<ProductOrderWithOrderWithUserDTO> getProductOrdersWithOrderWithUserByProductId(
     Long id
@@ -100,9 +86,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     );
   }
 
-  /**
-   * 4 degree nesting
-   */
   @Override
   public List<ProductOrderWithOrderWithUserWithAddressDTO> getProductOrderWithOrderWithUserWithAddressByProductId(
     Long id

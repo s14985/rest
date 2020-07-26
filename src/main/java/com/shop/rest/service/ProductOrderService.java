@@ -28,8 +28,6 @@ public interface ProductOrderService {
     List<Long> ids
   );
 
-  List<ProductOrderDTO> getProductOrdersByProductId(Long id);
-
   List<ProductOrderWithOrderDTO> getProductOrderWithOrderByProductId(Long id);
 
   List<ProductOrderWithOrderWithUserDTO> getProductOrdersWithOrderWithUserByProductId(

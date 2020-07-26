@@ -1,7 +1,6 @@
 package com.shop.rest.controller;
 
 import com.shop.rest.dto.order.OrderWithUserDTO;
-import com.shop.rest.dto.order.OrderWithUserWithAddressDTO;
 import com.shop.rest.dto.product_order.*;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Status;
@@ -27,22 +26,6 @@ public class OrderController {
   private final ProductService productService;
   private final ProductOrderService productOrderService;
   private final UserService userService;
-
-  @GetMapping({ "/users" })
-  public ResponseEntity<Iterable<OrderWithUserDTO>> getOrders() {
-    return new ResponseEntity<>(
-      orderService.getAllOrdersWithUser(),
-      HttpStatus.OK
-    );
-  }
-
-  @GetMapping({ "/{id}/user" })
-  public ResponseEntity<OrderWithUserDTO> getOrder(@PathVariable Long id) {
-    return new ResponseEntity<>(
-      orderService.getOrderWithUserById(id),
-      HttpStatus.OK
-    );
-  }
 
   @PostMapping(
     value = "",

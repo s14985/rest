@@ -2,7 +2,6 @@ package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.UserMapper;
 import com.shop.rest.dto.user.UserDTO;
-import com.shop.rest.dto.user.UserWithAddressDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.User;
 import com.shop.rest.repository.UserRepository;
@@ -26,19 +25,8 @@ public class UserServiceImpl implements UserService {
       );
   }
 
-  /**
-   * 3 degree nesting
-   */
   @Override
   public UserDTO getUserById(Long id) {
     return userMapper.toUserDto(getModel(id));
-  }
-
-  /**
-   * 4 degree nesting
-   */
-  @Override
-  public UserWithAddressDTO getUserWithAddressById(Long id) {
-    return userMapper.toUserWithAddressDto(getModel(id));
   }
 }

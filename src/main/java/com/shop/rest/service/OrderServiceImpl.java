@@ -2,9 +2,7 @@ package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.OrderMapper;
 import com.shop.rest.config.mapper.ProductOrderMapper;
-import com.shop.rest.dto.order.OrderDTO;
 import com.shop.rest.dto.order.OrderWithUserDTO;
-import com.shop.rest.dto.order.OrderWithUserWithAddressDTO;
 import com.shop.rest.dto.product_order.CreatedProductOrderDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Order;
@@ -34,11 +32,6 @@ public class OrderServiceImpl implements OrderService {
       .orElseThrow(
         () -> new ResourceNotFoundException("order", "id", id.toString())
       );
-  }
-
-  @Override
-  public @NotNull Iterable<OrderWithUserDTO> getAllOrdersWithUser() {
-    return orderMapper.toOrderWithUserDto(orderRepository.findAll());
   }
 
   @Override
@@ -76,27 +69,8 @@ public class OrderServiceImpl implements OrderService {
     return orderMapper.toOrderWithUserDto(order);
   }
 
-  /**
-   * 2 degree nesting
-   */
-  @Override
-  public OrderDTO getOrderById(Long id) {
-    return orderMapper.toOrderDto(getModel(id));
-  }
-
-  /**
-   * 3 degree nesting
-   */
   @Override
   public OrderWithUserDTO getOrderWithUserById(Long id) {
     return orderMapper.toOrderWithUserDto(getModel(id));
-  }
-
-  /**
-   * 4 degree nesting
-   */
-  @Override
-  public OrderWithUserWithAddressDTO getOrderWithUserWithAddressById(Long id) {
-    return orderMapper.toOrderWithUserWithAddressDto(getModel(id));
   }
 }

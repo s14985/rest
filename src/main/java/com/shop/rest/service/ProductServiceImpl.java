@@ -35,11 +35,6 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public FullProductDTO getFullProductById(Long id) {
-    return productMapper.toFullProductDto(getModel(id));
-  }
-
-  @Override
   public ProductDTO save(ProductDTO product) {
     return productMapper.toProductDto(
       productRepository.save(productMapper.toModel(product))
@@ -95,8 +90,12 @@ public class ProductServiceImpl implements ProductService {
   public ProductWithProductOrdersWithOrderDTO getProductWithProductOrdersWithOrderById(
     Long id
   ) {
-    ProductWithProductOrdersWithOrderDTO product =  productMapper.toProductWithProductOrdersWithOrderDto(getModel(id));
-    product.setProductOrders(productOrderService.getProductOrderWithOrderByProductId(id));
+    ProductWithProductOrdersWithOrderDTO product = productMapper.toProductWithProductOrdersWithOrderDto(
+      getModel(id)
+    );
+    product.setProductOrders(
+      productOrderService.getProductOrderWithOrderByProductId(id)
+    );
     return product;
   }
 
@@ -107,10 +106,12 @@ public class ProductServiceImpl implements ProductService {
   public ProductWithProductOrdersWithOrderWithUserDTO getProductWithProductOrdersWithOrderWithUserById(
     Long id
   ) {
-    ProductWithProductOrdersWithOrderWithUserDTO product =  productMapper.toProductWithProductOrdersWithOrderWithUserDto(
+    ProductWithProductOrdersWithOrderWithUserDTO product = productMapper.toProductWithProductOrdersWithOrderWithUserDto(
       getModel(id)
     );
-    product.setProductOrders(productOrderService.getProductOrdersWithOrderWithUserByProductId(id));
+    product.setProductOrders(
+      productOrderService.getProductOrdersWithOrderWithUserByProductId(id)
+    );
     return product;
   }
 
@@ -124,7 +125,11 @@ public class ProductServiceImpl implements ProductService {
     ProductWithProductOrdersWithOrderWithUserWithAddressDTO product = productMapper.toProductWithProductOrdersWithOrderWithUserWithAddressDto(
       getModel(id)
     );
-    product.setProductOrders(productOrderService.getProductOrderWithOrderWithUserWithAddressByProductId(id));
+    product.setProductOrders(
+      productOrderService.getProductOrderWithOrderWithUserWithAddressByProductId(
+        id
+      )
+    );
     return product;
   }
 }

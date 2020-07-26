@@ -1,5 +1,6 @@
 package com.shop.rest.exception;
 
+
 import org.springframework.util.StringUtils;
 
 public class ResourceNotFoundException extends RuntimeException {
