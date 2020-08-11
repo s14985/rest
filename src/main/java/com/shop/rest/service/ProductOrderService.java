@@ -1,7 +1,6 @@
 package com.shop.rest.service;
 
 import com.shop.rest.dto.product_order.*;
-import com.shop.rest.dto.product_order.output.ProductOrderDTO;
 import com.shop.rest.dto.product_order.output.ProductOrderWithOrderDTO;
 import com.shop.rest.dto.product_order.output.ProductOrderWithOrderWithUserDTO;
 import com.shop.rest.dto.product_order.output.ProductOrderWithOrderWithUserWithAddressDTO;
@@ -10,7 +9,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
-@Validated
 public interface ProductOrderService {
   CreatedProductOrderDTO create(
     @NotNull(
@@ -18,13 +16,13 @@ public interface ProductOrderService {
     ) @Valid CreatedProductOrderDTO productOrder
   );
 
-  List<FullProductOrderDTO> getFullProductOrdersByProductId(Long id);
+  List<SimpleProductOrderDTO> getFullProductOrdersByProductId(Long id);
 
-  List<SuggestedProductOrderDTO> getSuggestedProductOrdersByProductId(Long id);
+  List<SimpleProductOrderDTO> getSimpleProductOrdersByProductId(Long id);
 
-  void deleteAll(List<FullProductOrderDTO> productOrders);
+  void deleteAll(List<SimpleProductOrderDTO> productOrders);
 
-  List<SuggestedProductOrderDTO> getSuggestedProductOrderByOrdersIdIn(
+  List<SimpleProductOrderDTO> getSimpleProductOrderByOrdersIdIn(
     List<Long> ids
   );
 

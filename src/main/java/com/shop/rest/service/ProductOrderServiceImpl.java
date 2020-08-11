@@ -2,7 +2,6 @@ package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.ProductOrderMapper;
 import com.shop.rest.dto.product_order.*;
-import com.shop.rest.dto.product_order.output.ProductOrderDTO;
 import com.shop.rest.dto.product_order.output.ProductOrderWithOrderDTO;
 import com.shop.rest.dto.product_order.output.ProductOrderWithOrderWithUserDTO;
 import com.shop.rest.dto.product_order.output.ProductOrderWithOrderWithUserWithAddressDTO;
@@ -40,30 +39,30 @@ public class ProductOrderServiceImpl implements ProductOrderService {
   }
 
   @Override
-  public List<FullProductOrderDTO> getFullProductOrdersByProductId(Long id) {
-    return productOrderMapper.toFullProductOrderDto(getModelsByProductId(id));
+  public List<SimpleProductOrderDTO> getFullProductOrdersByProductId(Long id) {
+    return productOrderMapper.toSimpleProductOrderDto(getModelsByProductId(id));
   }
 
-  public void deleteAll(List<FullProductOrderDTO> productOrders) {
+  public void deleteAll(List<SimpleProductOrderDTO> productOrders) {
     productOrderRepository.deleteAll(
-      productOrderMapper.fullProductOrderToModel(productOrders)
+      productOrderMapper.simpleProductOrderToModel(productOrders)
     );
   }
 
   @Override
-  public List<SuggestedProductOrderDTO> getSuggestedProductOrderByOrdersIdIn(
+  public List<SimpleProductOrderDTO> getSimpleProductOrderByOrdersIdIn(
     List<Long> ids
   ) {
-    return productOrderMapper.toSuggestedProductOrderDto(
+    return productOrderMapper.toSimpleProductOrderDto(
       productOrderRepository.findAllByOrdersIdIn(ids)
     );
   }
 
   @Override
-  public List<SuggestedProductOrderDTO> getSuggestedProductOrdersByProductId(
+  public List<SimpleProductOrderDTO> getSimpleProductOrdersByProductId(
     Long id
   ) {
-    return productOrderMapper.toSuggestedProductOrderDto(
+    return productOrderMapper.toSimpleProductOrderDto(
       getModelsByProductId(id)
     );
   }

@@ -12,13 +12,15 @@ import org.mapstruct.Mapper;
 public interface ProductOrderMapper {
   ProductOrder fullProductOrderToModel(FullProductOrderDTO dto);
 
+  List<ProductOrder> simpleProductOrderToModel(List<SimpleProductOrderDTO> dtos);
+
   FullProductOrderDTO toFullProductOrderDto(ProductOrder model);
 
   List<ProductOrder> fullProductOrderToModel(List<FullProductOrderDTO> dtos);
 
   List<FullProductOrderDTO> toFullProductOrderDto(List<ProductOrder> models);
 
-  List<SuggestedProductOrderDTO> toSuggestedProductOrderDto(
+  List<SimpleProductOrderDTO> toSimpleProductOrderDto(
     List<ProductOrder> model
   );
 

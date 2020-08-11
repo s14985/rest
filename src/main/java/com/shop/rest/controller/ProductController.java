@@ -62,15 +62,15 @@ public class ProductController {
   public ResponseEntity<ProductDTO> editProduct(
     @Valid @RequestBody ProductDTO product
   ) {
-    product = productService.save(product);
-    return new ResponseEntity<>(product, HttpStatus.OK);
+    return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
   }
 
   @DeleteMapping(path = "/{id}")
-  public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
+  public ResponseEntity deleteProduct(@PathVariable Long id) {
     try {
       productService.deleteById(id);
-      return ResponseEntity.noContent().build();
+//      return ResponseEntity.noContent().build();
+      return new ResponseEntity(true, HttpStatus.OK);
     } catch (ResourceNotFoundException e) {
       throw new ResourceNotFoundException("product", "id", id.toString());
     }

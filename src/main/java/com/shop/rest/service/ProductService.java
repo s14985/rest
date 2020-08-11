@@ -2,9 +2,7 @@ package com.shop.rest.service;
 
 import com.shop.rest.dto.product.output.*;
 import javax.validation.constraints.NotNull;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
 public interface ProductService {
   @NotNull
   Iterable<ProductDTO> getProducts();
@@ -30,4 +28,6 @@ public interface ProductService {
   ProductWithProductOrdersWithOrderWithUserWithAddressDTO getProductWithProductOrdersWithOrderWithUserWithAddressById(
     Long id
   );
+
+  ProductDTO update(ProductDTO product);
 }

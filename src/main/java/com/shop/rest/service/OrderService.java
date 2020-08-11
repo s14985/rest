@@ -5,9 +5,8 @@ import com.shop.rest.dto.product_order.CreatedProductOrderDTO;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
+
 public interface OrderService {
   OrderWithUserDTO create(
     @NotNull(

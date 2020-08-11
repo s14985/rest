@@ -1,4 +1,4 @@
-package com.shop.rest.config;
+package com.shop.rest.config.swagger;
 
 import java.util.Collections;
 import org.springframework.context.annotation.Bean;

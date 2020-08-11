@@ -4,6 +4,8 @@ import com.shop.rest.dto.product.FullProductDTO;
 import com.shop.rest.dto.product.output.*;
 import com.shop.rest.model.Product;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface ProductMapper {
@@ -28,4 +30,7 @@ public interface ProductMapper {
   ProductWithProductOrdersWithOrderWithUserWithAddressDTO toProductWithProductOrdersWithOrderWithUserWithAddressDto(
     Product model
   );
+
+  @Mapping(target = "id", ignore = true)
+  Product updateProduct(ProductDTO dto, @MappingTarget Product model);
 }

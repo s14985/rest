@@ -1,9 +1,8 @@
 package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.ProductMapper;
-import com.shop.rest.dto.product.FullProductDTO;
 import com.shop.rest.dto.product.output.*;
-import com.shop.rest.dto.product_order.SuggestedProductOrderDTO;
+import com.shop.rest.dto.product_order.SimpleProductOrderDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Product;
 import com.shop.rest.repository.ProductRepository;
@@ -11,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -42,28 +42,34 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  public ProductDTO update(ProductDTO product) {
+    return productMapper.toProductDto(
+            productRepository.save(productMapper.updateProduct(product, getModel(product.getId()))));
+  }
+
+  @Override
   public void deleteById(Long id) {
     productOrderService.deleteAll(
-      productOrderService.getFullProductOrdersByProductId(id)
+      productOrderService.getSimpleProductOrdersByProductId(id)
     );
     productRepository.deleteById(id);
   }
 
   @Override
+  @Transactional
   public Iterable<ProductDTO> getSuggestedProductsFromOrdersByProductId(
     Long id
   ) {
     return productOrderService
-      .getSuggestedProductOrderByOrdersIdIn(
+      .getSimpleProductOrderByOrdersIdIn(
         productOrderService
-          .getSuggestedProductOrdersByProductId(id)
+          .getSimpleProductOrdersByProductId(id)
           .stream()
           .map(productOrderDTO -> productOrderDTO.getOrder().getId())
           .collect(Collectors.toList())
       )
       .stream()
-      .map(SuggestedProductOrderDTO::getProduct)
-      //      .distinct()
+      .map(SimpleProductOrderDTO::getProduct)
       .collect(Collectors.toList());
   }
 

@@ -36,7 +36,6 @@ public class OrderController {
     @RequestBody OrderedProductOrdersListDTO orderedProductOrdersList
   ) {
     List<OrderedProductOrderDTO> orderedProductOrders = orderedProductOrdersList.getProductOrders();
-    validateProductsExistence(orderedProductOrders);
     OrderWithUserDTO order = OrderWithUserDTO
       .builder()
       .status(Status.CREATED)
@@ -75,21 +74,5 @@ public class OrderController {
     orderWithUser.setStatus(Status.FINISHED);
     orderService.update(orderWithUser);
     return new ResponseEntity<>(orderWithUser, HttpStatus.OK);
-  }
-
-  private void validateProductsExistence(
-    List<OrderedProductOrderDTO> productOrders
-  ) {
-    List<OrderedProductOrderDTO> list = productOrders
-      .stream()
-      .filter(
-        op ->
-          Objects.isNull(productService.getProductById(op.getProduct().getId()))
-      )
-      .collect(Collectors.toList());
-
-    if (!CollectionUtils.isEmpty(list)) {
-      throw new ResourceNotFoundException("Product not found");
-    }
   }
 }
