@@ -1,6 +1,6 @@
 package com.shop.rest.dto.product_order;
 
-import com.shop.rest.dto.order.OrderWithUserDTO;
+import com.shop.rest.dto.order.output.OrderWithUserDTO;
 import com.shop.rest.dto.product.output.ProductDTO;
 import lombok.Builder;
 import lombok.Data;

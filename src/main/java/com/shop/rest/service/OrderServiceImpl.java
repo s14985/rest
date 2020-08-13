@@ -2,7 +2,7 @@ package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.OrderMapper;
 import com.shop.rest.config.mapper.ProductOrderMapper;
-import com.shop.rest.dto.order.OrderWithUserDTO;
+import com.shop.rest.dto.order.output.OrderWithUserDTO;
 import com.shop.rest.dto.product_order.CreatedProductOrderDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Order;

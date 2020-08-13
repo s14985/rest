@@ -1,20 +1,17 @@
 package com.shop.rest.controller;
 
-import com.shop.rest.dto.order.OrderWithUserDTO;
+import com.shop.rest.dto.order.output.OrderWithUserDTO;
 import com.shop.rest.dto.product_order.*;
-import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.Status;
 import com.shop.rest.service.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin

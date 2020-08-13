@@ -6,21 +6,17 @@ import org.springframework.util.StringUtils;
 public class ResourceNotFoundException extends RuntimeException {
 
   public ResourceNotFoundException(
-    String resourse,
+    String resource,
     String paramName,
     String param
   ) {
     super(
-      StringUtils.capitalize(resourse) +
+      StringUtils.capitalize(resource) +
       " with " +
       StringUtils.capitalize(paramName) +
       ": " +
       param +
       " not found."
     );
-  }
-
-  public ResourceNotFoundException(String message) {
-    super(message);
   }
 }

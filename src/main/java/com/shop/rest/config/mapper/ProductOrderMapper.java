@@ -9,16 +9,10 @@ import java.util.List;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface ProductOrderMapper {
-  ProductOrder fullProductOrderToModel(FullProductOrderDTO dto);
+public interface ProductOrderMapper { ;
 
   List<ProductOrder> simpleProductOrderToModel(List<SimpleProductOrderDTO> dtos);
 
-  FullProductOrderDTO toFullProductOrderDto(ProductOrder model);
-
-  List<ProductOrder> fullProductOrderToModel(List<FullProductOrderDTO> dtos);
-
-  List<FullProductOrderDTO> toFullProductOrderDto(List<ProductOrder> models);
 
   List<SimpleProductOrderDTO> toSimpleProductOrderDto(
     List<ProductOrder> model

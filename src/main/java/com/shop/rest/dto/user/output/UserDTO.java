@@ -1,4 +1,4 @@
-package com.shop.rest.dto.user;
+package com.shop.rest.dto.user.output;
 
 import lombok.Data;
 

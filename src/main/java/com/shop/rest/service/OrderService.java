@@ -1,6 +1,6 @@
 package com.shop.rest.service;
 
-import com.shop.rest.dto.order.OrderWithUserDTO;
+import com.shop.rest.dto.order.output.OrderWithUserDTO;
 import com.shop.rest.dto.product_order.CreatedProductOrderDTO;
 import java.util.List;
 import javax.validation.Valid;

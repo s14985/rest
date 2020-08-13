@@ -1,4 +1,4 @@
-package com.shop.rest.dto.address;
+package com.shop.rest.dto.address.output;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.shop.rest.service;
 
 import com.shop.rest.config.mapper.UserMapper;
-import com.shop.rest.dto.user.UserDTO;
+import com.shop.rest.dto.user.output.UserDTO;
 import com.shop.rest.exception.ResourceNotFoundException;
 import com.shop.rest.model.User;
 import com.shop.rest.repository.UserRepository;

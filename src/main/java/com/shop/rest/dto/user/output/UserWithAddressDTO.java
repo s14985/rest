@@ -1,6 +1,6 @@
-package com.shop.rest.dto.user;
+package com.shop.rest.dto.user.output;
 
-import com.shop.rest.dto.address.AddressDTO;
+import com.shop.rest.dto.address.output.AddressDTO;
 import lombok.Data;
 
 @Data
@@ -11,3 +11,4 @@ public class UserWithAddressDTO {
   private String lastName;
   private AddressDTO address;
 }
+
