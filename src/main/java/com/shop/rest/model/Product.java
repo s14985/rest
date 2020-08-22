@@ -32,7 +32,7 @@ public class Product {
 
   private String material;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
   private List<ProductOrder> productOrders;
 
   public Product(Long id) {
