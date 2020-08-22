@@ -15,26 +15,26 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "orders")
 public class Order {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-  private OffsetDateTime dateCreated;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	private OffsetDateTime dateCreated;
 
-  private Status status;
+	private Status status;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-  private List<ProductOrder> productOrders;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+	private List<ProductOrder> productOrders;
 
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-  public Order(Status status, User user) {
-    this.status = status;
-    this.user = user;
-    this.dateCreated = OffsetDateTime.now();
-  }
+	public Order(Status status, User user) {
+		this.status = status;
+		this.user = user;
+		this.dateCreated = OffsetDateTime.now();
+	}
 }

@@ -13,19 +13,19 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "user")
 public class User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  private String username;
-  private String firstName;
-  private String lastName;
+	private String username;
+	private String firstName;
+	private String lastName;
 
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "address_id")
-  private Address address;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
+	private Address address;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-  private List<Order> orders;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<Order> orders;
 }

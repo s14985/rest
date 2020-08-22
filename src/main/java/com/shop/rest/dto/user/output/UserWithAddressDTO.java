@@ -5,10 +5,9 @@ import lombok.Data;
 
 @Data
 public class UserWithAddressDTO {
-  private Long id;
-  private String username;
-  private String firstName;
-  private String lastName;
-  private AddressDTO address;
+	private Long id;
+	private String username;
+	private String firstName;
+	private String lastName;
+	private AddressDTO address;
 }
-

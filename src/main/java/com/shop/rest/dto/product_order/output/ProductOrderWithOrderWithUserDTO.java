@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ProductOrderWithOrderWithUserDTO {
-  private Long id;
-  private OrderWithUserDTO order;
-  private Integer quantity;
+	private Long id;
+	private OrderWithUserDTO order;
+	private Integer quantity;
 }

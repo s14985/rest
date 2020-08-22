@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 @Builder
 public class OrderWithUserWithAddressDTO {
-  private Long id;
+	private Long id;
 
-  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-  private OffsetDateTime dateCreated;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	private OffsetDateTime dateCreated;
 
-  private Status status;
+	private Status status;
 
-  private UserWithAddressDTO user;
+	private UserWithAddressDTO user;
 }

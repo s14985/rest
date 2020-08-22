@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class OrderedProductOrderDTO {
-  private ProductDTO product;
-  private Integer quantity;
+	private ProductDTO product;
+	private Integer quantity;
 }

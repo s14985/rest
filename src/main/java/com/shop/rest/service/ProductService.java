@@ -4,30 +4,30 @@ import com.shop.rest.dto.product.output.*;
 import javax.validation.constraints.NotNull;
 
 public interface ProductService {
-  @NotNull
-  Iterable<ProductDTO> getProducts();
+	@NotNull
+	Iterable<ProductDTO> getProducts();
 
-  ProductDTO save(ProductDTO product);
+	ProductDTO save(ProductDTO product);
 
-  void deleteById(Long id);
+	void deleteById(Long id);
 
-  Iterable<ProductDTO> getSuggestedProductsFromOrdersByProductId(Long id);
+	Iterable<ProductDTO> getSuggestedProductsFromOrdersByProductId(Long id);
 
-  ProductDTO getProductById(Long id);
+	ProductDTO getProductById(Long id);
 
-  ProductWithProductOrdersDTO getProductWithProductOrdersById(Long id);
+	ProductWithProductOrdersDTO getProductWithProductOrdersById(Long id);
 
-  ProductWithProductOrdersWithOrderDTO getProductWithProductOrdersWithOrderById(
-    Long id
-  );
+	ProductWithProductOrdersWithOrderDTO getProductWithProductOrdersWithOrderById(
+		Long id
+	);
 
-  ProductWithProductOrdersWithOrderWithUserDTO getProductWithProductOrdersWithOrderWithUserById(
-    Long id
-  );
+	ProductWithProductOrdersWithOrderWithUserDTO getProductWithProductOrdersWithOrderWithUserById(
+		Long id
+	);
 
-  ProductWithProductOrdersWithOrderWithUserWithAddressDTO getProductWithProductOrdersWithOrderWithUserWithAddressById(
-    Long id
-  );
+	ProductWithProductOrdersWithOrderWithUserWithAddressDTO getProductWithProductOrdersWithOrderWithUserWithAddressById(
+		Long id
+	);
 
-  ProductDTO update(ProductDTO product);
+	ProductDTO update(ProductDTO product);
 }

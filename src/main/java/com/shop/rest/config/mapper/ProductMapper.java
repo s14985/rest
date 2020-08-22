@@ -8,26 +8,26 @@ import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface ProductMapper {
-  Product toModel(ProductDTO dto);
+	Product toModel(ProductDTO dto);
 
-  Iterable<ProductDTO> toProductDto(Iterable<Product> models);
+	Iterable<ProductDTO> toProductDto(Iterable<Product> models);
 
-  ProductDTO toProductDto(Product model);
+	ProductDTO toProductDto(Product model);
 
-  ProductWithProductOrdersDTO toProductWithProductOrdersDto(Product model);
+	ProductWithProductOrdersDTO toProductWithProductOrdersDto(Product model);
 
-  ProductWithProductOrdersWithOrderDTO toProductWithProductOrdersWithOrderDto(
-    Product model
-  );
+	ProductWithProductOrdersWithOrderDTO toProductWithProductOrdersWithOrderDto(
+		Product model
+	);
 
-  ProductWithProductOrdersWithOrderWithUserDTO toProductWithProductOrdersWithOrderWithUserDto(
-    Product model
-  );
+	ProductWithProductOrdersWithOrderWithUserDTO toProductWithProductOrdersWithOrderWithUserDto(
+		Product model
+	);
 
-  ProductWithProductOrdersWithOrderWithUserWithAddressDTO toProductWithProductOrdersWithOrderWithUserWithAddressDto(
-    Product model
-  );
+	ProductWithProductOrdersWithOrderWithUserWithAddressDTO toProductWithProductOrdersWithOrderWithUserWithAddressDto(
+		Product model
+	);
 
-  @Mapping(target = "id", ignore = true)
-  Product updateProduct(ProductDTO dto, @MappingTarget Product model);
+	@Mapping(target = "id", ignore = true)
+	Product updateProduct(ProductDTO dto, @MappingTarget Product model);
 }

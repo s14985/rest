@@ -9,32 +9,30 @@ import java.util.List;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface ProductOrderMapper { ;
+public interface ProductOrderMapper {
+	List<ProductOrder> simpleProductOrderToModel(
+		List<SimpleProductOrderDTO> dtos
+	);
 
-  List<ProductOrder> simpleProductOrderToModel(List<SimpleProductOrderDTO> dtos);
+	List<SimpleProductOrderDTO> toSimpleProductOrderDto(List<ProductOrder> model);
 
+	ProductOrder createdProductOrderToModel(CreatedProductOrderDTO dto);
 
-  List<SimpleProductOrderDTO> toSimpleProductOrderDto(
-    List<ProductOrder> model
-  );
+	CreatedProductOrderDTO toCreatedProductOrderDto(ProductOrder model);
 
-  ProductOrder createdProductOrderToModel(CreatedProductOrderDTO dto);
+	List<ProductOrder> createdProductOrderToModel(
+		List<CreatedProductOrderDTO> dtos
+	);
 
-  CreatedProductOrderDTO toCreatedProductOrderDto(ProductOrder model);
+	List<ProductOrderWithOrderDTO> toProductOrderWithOrderDto(
+		List<ProductOrder> models
+	);
 
-  List<ProductOrder> createdProductOrderToModel(
-    List<CreatedProductOrderDTO> dtos
-  );
+	List<ProductOrderWithOrderWithUserDTO> toProductOrderWithOrderWithUserDto(
+		List<ProductOrder> models
+	);
 
-  List<ProductOrderWithOrderDTO> toProductOrderWithOrderDto(
-    List<ProductOrder> models
-  );
-
-  List<ProductOrderWithOrderWithUserDTO> toProductOrderWithOrderWithUserDto(
-    List<ProductOrder> models
-  );
-
-  List<ProductOrderWithOrderWithUserWithAddressDTO> toProductOrderWithOrderWithUserWithAddressDto(
-    List<ProductOrder> models
-  );
+	List<ProductOrderWithOrderWithUserWithAddressDTO> toProductOrderWithOrderWithUserWithAddressDto(
+		List<ProductOrder> models
+	);
 }

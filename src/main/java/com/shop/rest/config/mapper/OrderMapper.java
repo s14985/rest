@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface OrderMapper {
-  Order toModel(OrderWithUserDTO dto);
+	Order toModel(OrderWithUserDTO dto);
 
-  OrderWithUserDTO toOrderWithUserDto(Order model);
+	OrderWithUserDTO toOrderWithUserDto(Order model);
 }

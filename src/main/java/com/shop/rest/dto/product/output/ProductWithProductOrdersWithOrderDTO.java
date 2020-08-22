@@ -7,23 +7,23 @@ import lombok.Data;
 
 @Data
 public class ProductWithProductOrdersWithOrderDTO {
-  private Long id;
+	private Long id;
 
-  private String name;
+	private String name;
 
-  private BigDecimal price;
+	private BigDecimal price;
 
-  private String picture;
+	private String picture;
 
-  private String details;
+	private String details;
 
-  private String manufacturer;
+	private String manufacturer;
 
-  private String itemCode;
+	private String itemCode;
 
-  private String color;
+	private String color;
 
-  private String material;
+	private String material;
 
-  private List<ProductOrderWithOrderDTO> productOrders;
+	private List<ProductOrderWithOrderDTO> productOrders;
 }

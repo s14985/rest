@@ -1,11 +1,10 @@
 package com.shop.rest.dto.product_order;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class EditedProductOrderDTO {
-    private Long id;
-    private List<OrderedProductOrderDTO> productOrders;
+	private Long id;
+	private List<OrderedProductOrderDTO> productOrders;
 }

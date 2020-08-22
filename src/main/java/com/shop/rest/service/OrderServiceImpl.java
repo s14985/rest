@@ -20,57 +20,57 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
-  private final OrderRepository orderRepository;
-  private final OrderMapper orderMapper;
-  private final ProductOrderMapper productOrderMapper;
+	private final OrderRepository orderRepository;
+	private final OrderMapper orderMapper;
+	private final ProductOrderMapper productOrderMapper;
 
-  private Order getModel(
-    @Min(value = 1L, message = "Invalid order ID.") Long id
-  ) {
-    return orderRepository
-      .findById(id)
-      .orElseThrow(
-        () -> new ResourceNotFoundException("order", "id", id.toString())
-      );
-  }
+	private Order getModel(
+		@Min(value = 1L, message = "Invalid order ID.") Long id
+	) {
+		return orderRepository
+			.findById(id)
+			.orElseThrow(
+				() -> new ResourceNotFoundException("order", "id", id.toString())
+			);
+	}
 
-  @Override
-  public OrderWithUserDTO create(
-    @NotNull(
-      message = "The order cannot be null."
-    ) @Valid OrderWithUserDTO order
-  ) {
-    order.setDateCreated(OffsetDateTime.now());
-    return orderMapper.toOrderWithUserDto(
-      orderRepository.save(orderMapper.toModel(order))
-    );
-  }
+	@Override
+	public OrderWithUserDTO create(
+		@NotNull(
+			message = "The order cannot be null."
+		) @Valid OrderWithUserDTO order
+	) {
+		order.setDateCreated(OffsetDateTime.now());
+		return orderMapper.toOrderWithUserDto(
+			orderRepository.save(orderMapper.toModel(order))
+		);
+	}
 
-  @Override
-  public OrderWithUserDTO update(
-    @NotNull(
-      message = "The order cannot be null."
-    ) @Valid OrderWithUserDTO order
-  ) {
-    return orderMapper.toOrderWithUserDto(
-      orderRepository.save(orderMapper.toModel(order))
-    );
-  }
+	@Override
+	public OrderWithUserDTO update(
+		@NotNull(
+			message = "The order cannot be null."
+		) @Valid OrderWithUserDTO order
+	) {
+		return orderMapper.toOrderWithUserDto(
+			orderRepository.save(orderMapper.toModel(order))
+		);
+	}
 
-  @Override
-  public OrderWithUserDTO setOrder(
-    OrderWithUserDTO orderWithUserDTO,
-    List<CreatedProductOrderDTO> productOrders
-  ) {
-    Order order = orderMapper.toModel(orderWithUserDTO);
-    order.setProductOrders(
-      productOrderMapper.createdProductOrderToModel(productOrders)
-    );
-    return orderMapper.toOrderWithUserDto(order);
-  }
+	@Override
+	public OrderWithUserDTO setOrder(
+		OrderWithUserDTO orderWithUserDTO,
+		List<CreatedProductOrderDTO> productOrders
+	) {
+		Order order = orderMapper.toModel(orderWithUserDTO);
+		order.setProductOrders(
+			productOrderMapper.createdProductOrderToModel(productOrders)
+		);
+		return orderMapper.toOrderWithUserDto(order);
+	}
 
-  @Override
-  public OrderWithUserDTO getOrderWithUserById(Long id) {
-    return orderMapper.toOrderWithUserDto(getModel(id));
-  }
+	@Override
+	public OrderWithUserDTO getOrderWithUserById(Long id) {
+		return orderMapper.toOrderWithUserDto(getModel(id));
+	}
 }

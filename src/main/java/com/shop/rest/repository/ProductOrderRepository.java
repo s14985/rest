@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductOrderRepository
-  extends CrudRepository<ProductOrder, Long> {
-  @Query("SELECT po FROM ProductOrder po WHERE po.product.id = :id")
-  List<ProductOrder> findAllByProduct_Id(Long id);
+	extends CrudRepository<ProductOrder, Long> {
+	@Query("SELECT po FROM ProductOrder po WHERE po.product.id = :id")
+	List<ProductOrder> findAllByProduct_Id(Long id);
 
-  @Query("SELECT po FROM ProductOrder po WHERE po.order.id = :id")
-  List<ProductOrder> findAllByOrder_Id(Long id);
+	@Query("SELECT po FROM ProductOrder po WHERE po.order.id = :id")
+	List<ProductOrder> findAllByOrder_Id(Long id);
 
-  @Query("SELECT po FROM ProductOrder po WHERE po.order.id IN :ids")
-  List<ProductOrder> findAllByOrdersIdIn(List<Long> ids);
+	@Query("SELECT po FROM ProductOrder po WHERE po.order.id IN :ids")
+	List<ProductOrder> findAllByOrdersIdIn(List<Long> ids);
 }

@@ -5,5 +5,5 @@ import lombok.Data;
 
 @Data
 public class OrderedProductOrdersListDTO {
-  private List<OrderedProductOrderDTO> productOrders;
+	private List<OrderedProductOrderDTO> productOrders;
 }

@@ -6,24 +6,23 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-
 public interface OrderService {
-  OrderWithUserDTO create(
-    @NotNull(
-      message = "The order cannot be null."
-    ) @Valid OrderWithUserDTO order
-  );
+	OrderWithUserDTO create(
+		@NotNull(
+			message = "The order cannot be null."
+		) @Valid OrderWithUserDTO order
+	);
 
-  OrderWithUserDTO update(
-    @NotNull(
-      message = "The order cannot be null."
-    ) @Valid OrderWithUserDTO order
-  );
+	OrderWithUserDTO update(
+		@NotNull(
+			message = "The order cannot be null."
+		) @Valid OrderWithUserDTO order
+	);
 
-  OrderWithUserDTO setOrder(
-    OrderWithUserDTO orderWithUser,
-    List<CreatedProductOrderDTO> productOrders
-  );
+	OrderWithUserDTO setOrder(
+		OrderWithUserDTO orderWithUser,
+		List<CreatedProductOrderDTO> productOrders
+	);
 
-  OrderWithUserDTO getOrderWithUserById(Long id);
+	OrderWithUserDTO getOrderWithUserById(Long id);
 }

@@ -12,21 +12,21 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-  private final UserRepository userRepository;
-  private final UserMapper userMapper;
+	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 
-  private User getModel(
-    @Min(value = 1L, message = "Invalid user ID.") Long id
-  ) {
-    return userRepository
-      .findById(id)
-      .orElseThrow(
-        () -> new ResourceNotFoundException("user", "id", id.toString())
-      );
-  }
+	private User getModel(
+		@Min(value = 1L, message = "Invalid user ID.") Long id
+	) {
+		return userRepository
+			.findById(id)
+			.orElseThrow(
+				() -> new ResourceNotFoundException("user", "id", id.toString())
+			);
+	}
 
-  @Override
-  public UserDTO getUserById(Long id) {
-    return userMapper.toUserDto(getModel(id));
-  }
+	@Override
+	public UserDTO getUserById(Long id) {
+		return userMapper.toUserDto(getModel(id));
+	}
 }

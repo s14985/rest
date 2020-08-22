@@ -10,29 +10,27 @@ import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
 public interface ProductOrderService {
-  CreatedProductOrderDTO create(
-    @NotNull(
-      message = "The products for order cannot be null."
-    ) @Valid CreatedProductOrderDTO productOrder
-  );
+	CreatedProductOrderDTO create(
+		@NotNull(
+			message = "The products for order cannot be null."
+		) @Valid CreatedProductOrderDTO productOrder
+	);
 
-  List<SimpleProductOrderDTO> getFullProductOrdersByProductId(Long id);
+	List<SimpleProductOrderDTO> getFullProductOrdersByProductId(Long id);
 
-  List<SimpleProductOrderDTO> getSimpleProductOrdersByProductId(Long id);
+	List<SimpleProductOrderDTO> getSimpleProductOrdersByProductId(Long id);
 
-  void deleteAll(List<SimpleProductOrderDTO> productOrders);
+	void deleteAll(List<SimpleProductOrderDTO> productOrders);
 
-  List<SimpleProductOrderDTO> getSimpleProductOrderByOrdersIdIn(
-    List<Long> ids
-  );
+	List<SimpleProductOrderDTO> getSimpleProductOrderByOrdersIdIn(List<Long> ids);
 
-  List<ProductOrderWithOrderDTO> getProductOrderWithOrderByProductId(Long id);
+	List<ProductOrderWithOrderDTO> getProductOrderWithOrderByProductId(Long id);
 
-  List<ProductOrderWithOrderWithUserDTO> getProductOrdersWithOrderWithUserByProductId(
-    Long id
-  );
+	List<ProductOrderWithOrderWithUserDTO> getProductOrdersWithOrderWithUserByProductId(
+		Long id
+	);
 
-  List<ProductOrderWithOrderWithUserWithAddressDTO> getProductOrderWithOrderWithUserWithAddressByProductId(
-    Long id
-  );
+	List<ProductOrderWithOrderWithUserWithAddressDTO> getProductOrderWithOrderWithUserWithAddressByProductId(
+		Long id
+	);
 }

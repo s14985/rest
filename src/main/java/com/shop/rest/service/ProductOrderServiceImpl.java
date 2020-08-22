@@ -18,79 +18,77 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @AllArgsConstructor
 public class ProductOrderServiceImpl implements ProductOrderService {
-  private final ProductOrderRepository productOrderRepository;
-  private final ProductOrderMapper productOrderMapper;
+	private final ProductOrderRepository productOrderRepository;
+	private final ProductOrderMapper productOrderMapper;
 
-  private List<ProductOrder> getModelsByProductId(Long id) {
-    return productOrderRepository.findAllByProduct_Id(id);
-  }
+	private List<ProductOrder> getModelsByProductId(Long id) {
+		return productOrderRepository.findAllByProduct_Id(id);
+	}
 
-  @Override
-  public CreatedProductOrderDTO create(
-    @NotNull(
-      message = "The products for order cannot be null."
-    ) @Valid CreatedProductOrderDTO productOrder
-  ) {
-    return productOrderMapper.toCreatedProductOrderDto(
-      productOrderRepository.save(
-        productOrderMapper.createdProductOrderToModel(productOrder)
-      )
-    );
-  }
+	@Override
+	public CreatedProductOrderDTO create(
+		@NotNull(
+			message = "The products for order cannot be null."
+		) @Valid CreatedProductOrderDTO productOrder
+	) {
+		return productOrderMapper.toCreatedProductOrderDto(
+			productOrderRepository.save(
+				productOrderMapper.createdProductOrderToModel(productOrder)
+			)
+		);
+	}
 
-  @Override
-  public List<SimpleProductOrderDTO> getFullProductOrdersByProductId(Long id) {
-    return productOrderMapper.toSimpleProductOrderDto(getModelsByProductId(id));
-  }
+	@Override
+	public List<SimpleProductOrderDTO> getFullProductOrdersByProductId(Long id) {
+		return productOrderMapper.toSimpleProductOrderDto(getModelsByProductId(id));
+	}
 
-  public void deleteAll(List<SimpleProductOrderDTO> productOrders) {
-    productOrderRepository.deleteAll(
-      productOrderMapper.simpleProductOrderToModel(productOrders)
-    );
-  }
+	public void deleteAll(List<SimpleProductOrderDTO> productOrders) {
+		productOrderRepository.deleteAll(
+			productOrderMapper.simpleProductOrderToModel(productOrders)
+		);
+	}
 
-  @Override
-  public List<SimpleProductOrderDTO> getSimpleProductOrderByOrdersIdIn(
-    List<Long> ids
-  ) {
-    return productOrderMapper.toSimpleProductOrderDto(
-      productOrderRepository.findAllByOrdersIdIn(ids)
-    );
-  }
+	@Override
+	public List<SimpleProductOrderDTO> getSimpleProductOrderByOrdersIdIn(
+		List<Long> ids
+	) {
+		return productOrderMapper.toSimpleProductOrderDto(
+			productOrderRepository.findAllByOrdersIdIn(ids)
+		);
+	}
 
-  @Override
-  public List<SimpleProductOrderDTO> getSimpleProductOrdersByProductId(
-    Long id
-  ) {
-    return productOrderMapper.toSimpleProductOrderDto(
-      getModelsByProductId(id)
-    );
-  }
+	@Override
+	public List<SimpleProductOrderDTO> getSimpleProductOrdersByProductId(
+		Long id
+	) {
+		return productOrderMapper.toSimpleProductOrderDto(getModelsByProductId(id));
+	}
 
-  @Override
-  public List<ProductOrderWithOrderDTO> getProductOrderWithOrderByProductId(
-    Long id
-  ) {
-    return productOrderMapper.toProductOrderWithOrderDto(
-      getModelsByProductId(id)
-    );
-  }
+	@Override
+	public List<ProductOrderWithOrderDTO> getProductOrderWithOrderByProductId(
+		Long id
+	) {
+		return productOrderMapper.toProductOrderWithOrderDto(
+			getModelsByProductId(id)
+		);
+	}
 
-  @Override
-  public List<ProductOrderWithOrderWithUserDTO> getProductOrdersWithOrderWithUserByProductId(
-    Long id
-  ) {
-    return productOrderMapper.toProductOrderWithOrderWithUserDto(
-      getModelsByProductId(id)
-    );
-  }
+	@Override
+	public List<ProductOrderWithOrderWithUserDTO> getProductOrdersWithOrderWithUserByProductId(
+		Long id
+	) {
+		return productOrderMapper.toProductOrderWithOrderWithUserDto(
+			getModelsByProductId(id)
+		);
+	}
 
-  @Override
-  public List<ProductOrderWithOrderWithUserWithAddressDTO> getProductOrderWithOrderWithUserWithAddressByProductId(
-    Long id
-  ) {
-    return productOrderMapper.toProductOrderWithOrderWithUserWithAddressDto(
-      getModelsByProductId(id)
-    );
-  }
+	@Override
+	public List<ProductOrderWithOrderWithUserWithAddressDTO> getProductOrderWithOrderWithUserWithAddressByProductId(
+		Long id
+	) {
+		return productOrderMapper.toProductOrderWithOrderWithUserWithAddressDto(
+			getModelsByProductId(id)
+		);
+	}
 }

@@ -7,10 +7,10 @@ import lombok.Data;
 
 @Data
 public class OrderDTO {
-  private Long id;
+	private Long id;
 
-  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-  private OffsetDateTime dateCreated;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	private OffsetDateTime dateCreated;
 
-  private Status status;
+	private Status status;
 }

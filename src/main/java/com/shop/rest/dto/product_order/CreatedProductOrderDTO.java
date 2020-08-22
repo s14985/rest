@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @Builder
 public class CreatedProductOrderDTO {
-  private Long id;
-  private OrderWithUserDTO order;
-  private ProductDTO product;
-  private Integer quantity;
+	private Long id;
+	private OrderWithUserDTO order;
+	private ProductDTO product;
+	private Integer quantity;
 }
