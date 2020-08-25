@@ -1,9 +1,13 @@
 package com.shop.rest.dto.product.output;
 
 import java.math.BigDecimal;
+import lombok.Builder;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
 public class ProductDTO {
 	private Long id;
 
@@ -22,4 +26,8 @@ public class ProductDTO {
 	private String color;
 
 	private String material;
+
+	public ProductDTO(Long id) {
+		this.id = id;
+	}
 }

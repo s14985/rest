@@ -105,7 +105,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{id}/product-orders/order/user")
-	public ResponseEntity<ProductWithProductOrdersWithOrderWithUserDTO> getProductWithProductOrdersWithOrderWithUsert(
+	public ResponseEntity<ProductWithProductOrdersWithOrderWithUserDTO> getProductWithProductOrdersWithOrderWithUser(
 		@PathVariable Long id
 	) {
 		return new ResponseEntity<>(
