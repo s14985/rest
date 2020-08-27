@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.rest.model.Status;
 import java.time.OffsetDateTime;
 import lombok.Data;
+import lombok.Builder;
 
 @Data
+@Builder
 public class OrderDTO {
 	private Long id;
 

@@ -15,25 +15,13 @@ class OrderIntegrationTest {
 
 	@Test
 	void createOrder() {
+		ProductDTO productDTO_1 = ProductDTO.builder().id(1L).build();
+		ProductDTO productDTO_2 = ProductDTO.builder().id(2L).build();
+		OrderedProductOrdersListDTO ordersList = new OrderedProductOrdersListDTO(List.of(new OrderedProductOrderDTO(productDTO_1, 5), new OrderedProductOrderDTO(productDTO_2, 6)));
+
 		given()
 			.contentType(ContentType.JSON)
-			.body(
-				OrderedProductOrdersListDTO
-					.builder()
-					.productOrders(
-						List.of(
-							new OrderedProductOrderDTO(
-								ProductDTO.builder().id(1L).build(),
-								5
-							),
-							new OrderedProductOrderDTO(
-							        ProductDTO.builder().id(2L).build(),
-                                    6
-                            )
-						)
-					)
-					.build()
-			)
+			.body(ordersList)
 			.post(ORDERS_URL)
 			.then()
 			.statusCode(201)

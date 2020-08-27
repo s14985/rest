@@ -66,11 +66,10 @@ public class ProductController {
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity deleteProduct(@PathVariable Long id) {
+	public ResponseEntity<Boolean> deleteProduct(@PathVariable Long id) {
 		try {
 			productService.deleteById(id);
-			//      return ResponseEntity.noContent().build();
-			return new ResponseEntity(true, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
 			throw new ResourceNotFoundException("product", "id", id.toString());
 		}
